@@ -3,5 +3,6 @@ public class test {
         System.out.println("dfdfdf");
         System.out.println("네");
         System.out.println("하이요");
+        System.out.println("bnn");
     }
 }
