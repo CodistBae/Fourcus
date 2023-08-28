@@ -4,5 +4,6 @@ public class test {
         System.out.println("네");
         System.out.println("하이요");
         System.out.println("bnn");
+        System.out.println("마지막");
     }
 }
