@@ -1,29 +1,26 @@
 import lombok.NoArgsConstructor;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class GroupMemberDao {
-    // Connection
+    private DbUtils dbUtils;
     public GroupMemberDao(){
-    // dbconn
+        dbUtils = DbUtils.getInstance();
     }
 
 // 멤버 추가
     public void insert(GroupMember gb){
-        // Connection
+
         String sql = "insert into GroupMember values(null, ?,?,?)";
-        try{
+        try(Connection connection =dbUtils.getConnection();
+            PreparedStatement pstmt = connection.prepareStatement(sql)){
+
+            pstmt.setString(1, gb.getMember_id()); //
 
         } catch (SQLException e){
             throw new RuntimeException(e);
-        } finally {
-            try{
-
-            } catch (SQLException e){
-                throw new RuntimeException(e);
-            }
         }
     }
 //  그룹원 select (그룹원 id로 -> 해당 그룹원의 정보 확인)
@@ -33,11 +30,12 @@ public class GroupMemberDao {
             ResultSet rs = pstmt.executeQuery();
 
             if (rs.next()){
+
                 return new GroupMember(
                         rs.getLong(1), // Id
                         rs.getString(2), // Member_id
                         rs.getString(3), // Group_name
-                        rs.getDate.toLocalDateTime(4) // cummulative time
+                        new Timestamp( rs.getDate(4).getTime()).toLocalDateTime() // 누적 시간
                 );
             }
         } catch (SQLException e){
@@ -58,7 +56,7 @@ public class GroupMemberDao {
                         rs.getLong(1), // Id
                         rs.getString(2), // Member_id
                         rs.getString(3), // Group_name
-                        rs.getDate(4)
+                        new Timestamp( rs.getDate(4).getTime()).toLocalDateTime() // Cumulative_time
                 ));
             }
         } catch(SQLException e) {
@@ -92,8 +90,8 @@ public class GroupMemberDao {
             }
         }
     }
-// 그룹의 누적시간 가져오기
-    public Date
+// 그룹의 누적시간 가져오기 ?
+
 
 
 }
