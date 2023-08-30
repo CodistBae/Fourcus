@@ -146,6 +146,7 @@ atlassian-ide-plugin.xml
 # Cursive Clojure plugin
 .idea/replstate.xml
 
+
 # SonarLint plugin
 .idea/sonarlint/
 
@@ -214,3 +215,4 @@ replay_pid*
 
 # End of https://www.toptal.com/developers/gitignore/api/intellij+iml,eclipse,java,sonarqube,sonar,git
 /src/main/java/common/DbUtils.java
+

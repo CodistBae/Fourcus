@@ -1,7 +1,8 @@
 package GroupMember.service;
 
-import java.util.Scanner;
 import GroupMember.dao.GroupMemberDao;
+
+import java.util.Scanner;
 
 public class GroupMemberService {
     private GroupMemberDao dao;

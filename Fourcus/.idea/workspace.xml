@@ -6,11 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="22c1b802-990d-4853-9246-4dae930db02d" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Member/Member.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Member/Member.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Member/MemberDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Member/MemberDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/test.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main/Java/GroupMember/dao/GroupMemberDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main/Java/GroupMember/dao/GroupMemberDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main/Java/GroupMember/service/GroupMemberService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main/Java/GroupMember/service/GroupMemberService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
