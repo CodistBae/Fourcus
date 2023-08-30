@@ -26,7 +26,9 @@ public class GroupMemberDao {
 //  그룹원 select (그룹원 id로 -> 해당 그룹원의 정보 확인)
     public GroupMember select (long Group_id){
         String sql = "select * from GroupMember where Group_id = ?";
-        try{
+        try(Connection connection =dbUtils.getConnection();
+            PreparedStatement pstmt = connection.prepareStatement(sql)){
+
             ResultSet rs = pstmt.executeQuery();
 
             if (rs.next()){
@@ -41,6 +43,7 @@ public class GroupMemberDao {
         } catch (SQLException e){
             throw new RuntimeException(e);
         }
+        return null;
     }
 // 전체 검색
     public ArrayList<GroupMember> selectAll(){
@@ -48,7 +51,8 @@ public class GroupMemberDao {
 
         String sql = "select * from GroupMember";
 
-        try{
+        try(Connection connection =dbUtils.getConnection();
+            PreparedStatement pstmt = connection.prepareStatement(sql)){
 
             ResultSet rs = pstmt.executeQuery();
             while(rs.next()){
@@ -61,12 +65,6 @@ public class GroupMemberDao {
             }
         } catch(SQLException e) {
             throw new RuntimeException(e);
-        } finally{
-            try{
-                conn.close();
-            } catch (SQLException e){
-                throw new RuntimeException(e);
-            }
         }
         return list;
     }
@@ -75,19 +73,14 @@ public class GroupMemberDao {
 
         String sql = "delete GroupMember where Group_id =?";
 
-        try{
+        try(Connection connection =dbUtils.getConnection();
+            PreparedStatement pstmt = connection.prepareStatement(sql)){
 
 
             int cnt = pstmt.executeUpdate();
             System.out.printf("%s님 추방 완료", Group_id);
         } catch(SQLException e) {
             throw new RuntimeException(e);
-        } finally{
-            try{
-                conn.close();
-            } catch (SQLException e){
-                throw new RuntimeException(e);
-            }
         }
     }
 // 그룹의 누적시간 가져오기 ?
