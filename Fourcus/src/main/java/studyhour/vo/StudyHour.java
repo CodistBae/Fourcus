@@ -16,11 +16,11 @@ public class StudyHour {
     private LocalDateTime startTime;     // 공부 시작 시각
     private LocalDateTime reStartTime;   // 공부 재시작 시각
     private LocalDateTime stopTime;  // 종료 시각
-    private Time cumulativeTime;   // 누적 시간
-    private Time maxFocusTime;    // 최대 집중 시간
+    private long cumulativeTime;   // 누적 시간
+    private long maxFocusTime;    // 최대 집중 시간
 
     public StudyHour() {}
-    public StudyHour(long id, long subjectId, LocalDateTime startTime, LocalDateTime reStartTime, LocalDateTime stopTime, Time cumulativeTime, Time maxFocusTime) {
+    public StudyHour(long id, long subjectId, LocalDateTime startTime, LocalDateTime reStartTime, LocalDateTime stopTime, long cumulativeTime, long maxFocusTime) {
         this.id = id;
         this.subjectId = subjectId;
         this.startTime = startTime;

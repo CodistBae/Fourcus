@@ -50,7 +50,7 @@ public class StudyHourDao {
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        }finally {
+        } finally {
             try {
                 connection.close();
             } catch (SQLException e) {
@@ -153,7 +153,7 @@ public class StudyHourDao {
             if(rs.next()){
                 sh = new StudyHour(rs.getLong(1), rs.getLong(2),
                         rs.getTimestamp(3).toLocalDateTime(), rs.getTimestamp(4).toLocalDateTime(),
-                        rs.getTimestamp(5).toLocalDateTime(), rs.getTime(6),rs.getTime(7));
+                        rs.getTimestamp(5).toLocalDateTime(), rs.getLong(6),rs.getLong(7));
             }
 
         } catch (SQLException e) {
@@ -170,8 +170,8 @@ public class StudyHourDao {
     }
 
     // select ct
-    public Time selectCumulativeTime(long subjectId){
-        Time time = null;
+    public long selectCumulativeTime(long subjectId){
+        long time = 0;
         Connection connection = dbUtils.getConnection();
         String sql = "select Cumulative_time from StudyHour where Subject_id = ?";
 
@@ -181,7 +181,7 @@ public class StudyHourDao {
             ResultSet rs = ps.executeQuery();
 
             if(rs.next()){
-
+                time = rs.getLong(1);
             }
 
         } catch (SQLException e) {
@@ -198,9 +198,74 @@ public class StudyHourDao {
 
 
     // update ct( 누적시간 )
+    public void updateCumulativeTime(long newCumulativeTIme, long subjectId){
+        Connection connection = dbUtils.getConnection();
+        String sql = "update StudyHour set Cumulative_time = ?  where Subject_id = ?";
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setLong(1, newCumulativeTIme);
+            ps.setLong(2, subjectId);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    // select max
+    public long selectMax(long subjectId){
+        long max = 0;
+        Connection connection = dbUtils.getConnection();
+        String sql = "select Max_focus_time from StudyHour where Subject_id = ?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setLong(1, subjectId);
+            ResultSet rs = ps.executeQuery();
+
+            if(rs.next()){
+                max = rs.getLong(1);
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return max;
+
+    }
+
 
     // update max
+    public void updateMax(long newMax, long subjectId){
+        Connection connection = dbUtils.getConnection();
+        String sql = "update StudyHour set Max_focus_time = ?  where Subject_id = ?";
 
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setLong(1, newMax);
+            ps.setLong(2, subjectId);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
 
 }
 
