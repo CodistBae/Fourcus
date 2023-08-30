@@ -1,7 +1,5 @@
 package Member;
 
-import lombok.Getter;
-
 import java.sql.Date;
 
 public class Member {
