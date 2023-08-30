@@ -213,4 +213,4 @@ replay_pid*
 .sonarlint/
 
 # End of https://www.toptal.com/developers/gitignore/api/intellij+iml,eclipse,java,sonarqube,sonar,git
-/src/main/java/tamagotchi/common/DbUtils.java
+/src/main/java/common/DbUtils.java

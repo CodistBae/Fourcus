@@ -1,13 +1,9 @@
 package studyhour.service;
 
 import studyhour.dao.StudyHourDao;
-import studyhour.vo.StudyHour;
 
-import java.sql.Time;
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Scanner;
 
 public class StudyHourService {
     private StudyHourDao shDao;
