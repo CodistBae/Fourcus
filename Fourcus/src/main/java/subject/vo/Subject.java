@@ -4,9 +4,6 @@ package subject.vo;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
-import java.util.stream.Stream;
-
 public class Subject {
     @Getter
     @Setter

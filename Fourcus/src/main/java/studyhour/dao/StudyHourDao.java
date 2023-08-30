@@ -1,11 +1,10 @@
 package studyhour.dao;
 
+import common.DbUtils;
 import studyhour.vo.StudyHour;
-import tamagotchi.common.DbUtils;
 
 import java.sql.*;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 public class StudyHourDao {
     private DbUtils dbUtils;

@@ -2,7 +2,6 @@ package subject.dao;
 
 import subject.vo.Subject;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Subjectdao {
