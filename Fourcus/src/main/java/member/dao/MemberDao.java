@@ -1,6 +1,7 @@
-package Member;
+package member.dao;
 
 import common.DbUtils;
+import member.vo.Member;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -53,7 +54,8 @@ public class MemberDao {
             pstmt.setLong(1, id);
             ResultSet rs = pstmt.executeQuery();
             if(rs.next())
-                return new Member(rs.getLong(1), rs.getString(5), rs.getString(7));
+                return new Member(rs.getLong(1), rs.getString(3), rs.getString(5),
+                                    rs.getString(6), rs.getString(7), rs.getLong(2));
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -155,8 +157,28 @@ public class MemberDao {
     }
 
     // 회원 정보 수정(카테고리)
-    public void updateCategory(String username){
+    public void updateCategory(Long id, Long category_id){
+        Connection conn = dbconn.getConnection();
+        String sql = "update Memger set Category_id=? where id=?";
 
+        try{
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+
+            pstmt.setLong(1, category_id);
+            pstmt.setLong(2, id);
+
+            pstmt.executeUpdate();
+            System.out.println("카테고리 변경이 완료되었습니다.");
+
+        } catch (SQLException e){
+            e.printStackTrace();
+        } finally {
+            try {
+                conn.close();
+            } catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
     }
 
     public void delete(Long id){
