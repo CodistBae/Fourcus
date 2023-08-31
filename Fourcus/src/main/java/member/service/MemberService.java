@@ -2,6 +2,7 @@ package member.service;
 
 import member.dao.MemberDao;
 import member.vo.Member;
+import tamagotchi.dao.TamagotchiDao;
 
 import java.util.Scanner;
 
@@ -10,7 +11,7 @@ public class MemberService {
     public static Long loginId;
 
     public MemberService(){
-        dao = new MemberDao();
+        dao = MemberDao.getInstance();
         loginId = null;
     }
 
@@ -41,6 +42,7 @@ public class MemberService {
             Long category_id = sc.nextLong();
 
             dao.insert(new Member(username, password, nickname, email, category_id));
+
         } else {
             System.out.println("로그아웃 후 이용해주세요.");
         }
