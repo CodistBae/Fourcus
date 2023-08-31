@@ -15,7 +15,7 @@ public class TitleDao {
     }
 
     public void insert(Title title) {
-        String sql = "insert into Title values (Member_id, Title_name) values ?, ?";
+        String sql = "insert into Title(Member_id, Title_name) values (?, ?)";
 
         try (Connection connection = dbUtils.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -55,5 +55,35 @@ public class TitleDao {
         }
 
         return titles;
+    }
+
+    public void modify(long id) {
+        String sql = "update Title set Select = true where id = ?";
+        try (Connection connection = dbUtils.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ps.setLong(1, id);
+            ps.executeUpdate();
+
+            System.out.println("Title select success");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void initTitle(long memberId) {
+        String sql = "update Title set Select = false where Member_id = ? and `select` = true";
+        try (Connection connection = dbUtils.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ps.setLong(1, memberId);
+            ps.executeUpdate();
+
+            System.out.println("Title initialization success");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
