@@ -16,6 +16,7 @@ public class StudyHourService {
 
     // 시작 버튼 ( 첫 시작 insert or 재시작 update)
     public void addReStart(long subjectId) {
+
         LocalDateTime currentTime = LocalDateTime.now();
         if (shDao.selectStartTime(subjectId) == null) {
             System.out.println("공부를 시작합니다.");
