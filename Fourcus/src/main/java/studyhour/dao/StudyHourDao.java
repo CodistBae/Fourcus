@@ -18,7 +18,7 @@ public class StudyHourDao {
     // 공부시간 startTime 넣기
     public void start(LocalDateTime startTime, long subjectId){
         Connection connection = dbUtils.getConnection();
-        String sql = "insert into StudyHour(Start_time) values(?) where Subject_id = ?";
+        String sql = "insert into StudyHour(Start_time, Subject_id) values(?,?)";
 
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
@@ -38,7 +38,7 @@ public class StudyHourDao {
 
     }
 
-    // 공부시간 stopTime not null 이어서 0으로 해두고 update 하는 형식
+    // 종료시간 업데이트
     public void stop(LocalDateTime stopTime, long subjectId) {
         Connection connection = dbUtils.getConnection();
         String sql = "update StudyHour set Stop_time = ? where Subject_id = ?";
@@ -137,6 +137,33 @@ public class StudyHourDao {
         }
         return stopTime;
 
+    }
+
+    // restart 시간 가져오기
+    public LocalDateTime selectRestartTime(long subjectId){
+        LocalDateTime restartTime = null;
+        Connection connection = dbUtils.getConnection();
+        String sql = "select Restart_time from StudyHour where Subject_id = ?";
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setLong(1, subjectId);
+            ResultSet rs = ps.executeQuery();
+
+            if(rs.next()){
+                restartTime = rs.getTimestamp(1).toLocalDateTime();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        return restartTime;
     }
 
 
