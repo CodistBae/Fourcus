@@ -10,19 +10,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TamagotchiDao {
-
+    private static TamagotchiDao tamagotchiDao = new TamagotchiDao();
     private final DbUtils dbUtils;
 
-    public TamagotchiDao() {
+    private TamagotchiDao() {
         dbUtils = DbUtils.getInstance();
     }
 
-    public void insert(Tamagotchi tamagotchi) {
-        String sql = "insert into Tamagotchi (Member_id, Tamagotchi_name, Level, Type) values (?,?, ?, ?)";
+    public static TamagotchiDao getInstance() {
+        return tamagotchiDao;
+    }
+
+    public void insert(Tamagotchi tamagotchi, String username) {
+        String sql = """
+                insert into Tamagotchi(Member_id, Tamagotchi_name, Level, Type) 
+                values ((select id from `Member` where Username = ?), ?, ?, ?);
+                """;
         try (Connection connection = dbUtils.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
 
-            ps.setLong(1, tamagotchi.getMemberId());
+            ps.setString(1, username);
             ps.setString(2, tamagotchi.getTamagotchiName());
             ps.setInt(3, tamagotchi.getLevel());
             ps.setString(4, tamagotchi.getType().getName());
