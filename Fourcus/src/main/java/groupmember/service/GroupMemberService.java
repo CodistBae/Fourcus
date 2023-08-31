@@ -1,6 +1,6 @@
-package GroupMember.service;
+package groupmember.service;
 
-import GroupMember.dao.GroupMemberDao;
+import groupmember.dao.GroupMemberDao;
 
 import java.util.Scanner;
 
