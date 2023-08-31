@@ -14,7 +14,7 @@ public class MemberService {
     public static Long loginId;
 
     public MemberService() {
-        dao = new MemberDao();
+        dao = MemberDao.getInstance();
         loginId = null;
         this.tamagotchiDao = TamagotchiDao.getInstance();
     }
