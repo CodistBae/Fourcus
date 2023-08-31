@@ -1,7 +1,10 @@
-package Member;
+package member.vo;
+
+import lombok.Getter;
 
 import java.sql.Date;
 
+@Getter
 public class Member {
     private Long id;
     private String username;
@@ -11,6 +14,15 @@ public class Member {
     private String title;
     private Date production;
     private Long category_id;
+
+    public Member(Long id, String username, String nickname, String email, String title, Long category_id){
+        this.id = id;
+        this.username = username;
+        this.nickname = nickname;
+        this.email = email;
+        this.title = title;
+        this.category_id = category_id;
+    }
 
     public Member(Long id, String username, String password, String nickname, String email, String title){
         this.id = id;
@@ -33,38 +45,6 @@ public class Member {
         this.nickname = nickname;
         this.email = email;
         this.category_id = category_id;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public String getNickname() {
-        return nickname;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public Date getProduction() {
-        return production;
-    }
-
-    public Long getCategory_id() {
-        return category_id;
     }
 
     @Override

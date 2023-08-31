@@ -1,6 +1,6 @@
-package GroupMember.dao;
+package groupmember.dao;
 
-import GroupMember.vo.GroupMember;
+import groupmember.vo.GroupMember;
 import common.DbUtils;
 
 import java.sql.Connection;

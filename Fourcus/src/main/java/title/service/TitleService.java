@@ -1,6 +1,6 @@
 package title.service;
 
-import Member.MemberService;
+import member.service.MemberService;
 import title.dao.TitleDao;
 import title.vo.Title;
 

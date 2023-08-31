@@ -1,4 +1,4 @@
-package GroupMember.vo;
+package groupmember.vo;
 
 import lombok.*;
 

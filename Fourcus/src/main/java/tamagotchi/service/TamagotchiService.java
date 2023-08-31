@@ -1,6 +1,6 @@
 package tamagotchi.service;
 
-import Member.MemberService;
+import member.service.MemberService;
 import tamagotchi.dao.TamagotchiDao;
 import tamagotchi.vo.Tamagotchi;
 import tamagotchi.vo.Type;
