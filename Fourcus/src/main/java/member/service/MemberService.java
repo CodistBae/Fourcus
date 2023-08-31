@@ -1,4 +1,7 @@
-package Member;
+package member.service;
+
+import member.dao.MemberDao;
+import member.vo.Member;
 
 import java.util.Scanner;
 
@@ -101,9 +104,12 @@ public class MemberService {
 
     // 회원 정보 수정(카테고리)
     public void updateCategory(Scanner sc){
-        System.out.println("=====카테고리 변경=====");
         if(loginId != null){
+            System.out.println("=====카테고리 변경=====");
             Member m = dao.selectById(loginId);
+            System.out.print("1.학생 2.취준생 3.자격증준비");
+            Long c_id = sc.nextLong();
+            dao.updateCategory(loginId, c_id);
         } else {
             System.out.println("로그인 후 사용해주세요.");
         }

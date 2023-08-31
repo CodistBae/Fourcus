@@ -1,9 +1,12 @@
 package tamagotchi.service;
 
+import member.service.MemberService;
 import tamagotchi.dao.TamagotchiDao;
 import tamagotchi.vo.Tamagotchi;
 import tamagotchi.vo.Type;
 
+import java.time.Duration;
+import java.util.List;
 import java.util.Scanner;
 
 public class TamagotchiService {
@@ -15,11 +18,10 @@ public class TamagotchiService {
     }
 
     public void createTamagotchi(Scanner sc) {
-        //todo memberId를 인자로 넣어주어야함.
         tamagotchiDao.insert(
                 Tamagotchi.builder()
                         .id(1)
-                        .memberId(1)
+                        .memberId(MemberService.loginId)
                         .tamagotchiName("이름을 바꿔줘욤")
                         .level(1)
                         .type(Type.tree)
@@ -28,9 +30,16 @@ public class TamagotchiService {
     }
 
     public void levelUpdate() {
-        //todo 누적 시간에 따라 레벨이 달라짐.
-        // 누적시간 가져오고 /5 해서 레벨 구할것임.
+        List<Long> totalStudyTime = tamagotchiDao.getTotalStudyTime(MemberService.loginId);
+        long sumTime = totalStudyTime.stream()
+                .mapToLong(Long::longValue)
+                .sum();
+
+        Duration duration = Duration.ofSeconds(sumTime);
+        int level = (int) (duration.toHours() / 5 + 1);
+
         Tamagotchi tamagotchi = getTamagotchi();
+        tamagotchi.setLevel(level);
 
         tamagotchiDao.modify(tamagotchi);
     }
@@ -61,12 +70,11 @@ public class TamagotchiService {
     }
 
     public Tamagotchi getTamagotchi() {
-        //todo memberId를 인자로 넣어주어야함.
-        return tamagotchiDao.findByMemberId(1);
+        return tamagotchiDao.findByMemberId(MemberService.loginId);
     }
 
     public void deleteTamagotchi() {
-        //todo memberId를 인자로 넣어주어야함.
-        tamagotchiDao.deleteByMemberId(1);
+        // TODO: 2023/08/30 삭제할때 타마고치도 같이 삭제.
+        tamagotchiDao.deleteByMemberId(MemberService.loginId);
     }
 }
