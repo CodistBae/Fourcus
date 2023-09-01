@@ -82,7 +82,7 @@ public class TitleDao {
     }
 
     public void modify(long id) {
-        String sql = "update Title set Select = true where id = ?";
+        String sql = "update Title set `Select` = true where id = ?";
         try (Connection connection = dbUtils.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
 
@@ -97,7 +97,7 @@ public class TitleDao {
     }
 
     public void initTitle(long memberId) {
-        String sql = "update Title set Select = false where Member_id = ? and `select` = true";
+        String sql = "update Title set `Select` = false where Member_id = ? and `select` = true";
         try (Connection connection = dbUtils.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
 

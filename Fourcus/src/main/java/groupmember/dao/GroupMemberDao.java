@@ -2,19 +2,23 @@ package groupmember.dao;
 
 import groupmember.vo.GroupMember;
 import common.DbUtils;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class GroupMemberDao {
     private DbUtils dbUtils;
-    public GroupMemberDao(){
+    private static GroupMemberDao gmdao = new GroupMemberDao();
+    private GroupMemberDao(){
         dbUtils = DbUtils.getInstance();
     }
 
+    public static GroupMemberDao getInstance(){return gmdao;}
+
 //* 그룹장의 기능 *//
     // 멤버 추가 (해당 그룹에 해당 멤버가 없어야함)
-    public void insert(String username, long Group_id) { // 그룹원의idx, Member_id, Group_id, Cumulative_time
+    public void insert(Long Member_id, String username, Long Group_id) { // 그룹원의idx, Member_id, Group_id, Cumulative_time
 
         String sql = """
                 insert into GroupMember(Member_id, Cumulative_time, Group_id) 
@@ -29,8 +33,10 @@ public class GroupMemberDao {
         try (Connection connection = dbUtils.getConnection();
              PreparedStatement pstmt = connection.prepareStatement(sql)) {
 
-            pstmt.setString(1, username); //
-            pstmt.setLong(2, Group_id);
+            pstmt.setLong(1, Member_id);
+            pstmt.setString(2, username); //
+            pstmt.setLong(3, Group_id);
+            pstmt.executeUpdate();
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -39,9 +45,9 @@ public class GroupMemberDao {
     }
 
     // 그룹멤버 추방 (내 그룹에 있는)
-    public void delete(long Member_id, long Group_id) {
+    public void delete(long Member_id, Long Group_id) {
 
-        String sql = "delete GroupMember where Member_id =? and Group_id =?";
+        String sql = "delete from GroupMember where Member_id =? and Group_id =?";
 
         try (Connection connection = dbUtils.getConnection();
              PreparedStatement pstmt = connection.prepareStatement(sql)) {
@@ -50,7 +56,6 @@ public class GroupMemberDao {
             pstmt.setLong(2, Group_id);
 
             int cnt = pstmt.executeUpdate();
-            System.out.printf("%s님 추방 완료", Member_id);
 
         } catch (SQLException e) {
             throw new RuntimeException(e);

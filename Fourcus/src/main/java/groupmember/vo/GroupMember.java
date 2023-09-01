@@ -7,9 +7,9 @@ import lombok.*;
 @Setter
 @ToString
 public class GroupMember {
-    private long Id;
-    private long Member_id;
-    private long Group_id;
-    private long Cumulative_time;
+    private Long Id;
+    private Long Member_id;
+    private Long Group_id;
+    private Long Cumulative_time;
 
 }

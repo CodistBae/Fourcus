@@ -13,9 +13,13 @@ import java.util.ArrayList;
 public class GroupDao {
     private DbUtils dbUtils;
 
-    public GroupDao(){
+    private static GroupDao gdao = new GroupDao();
+
+    private GroupDao(){
         dbUtils = DbUtils.getInstance();
     }
+
+    public static GroupDao getInstance(){ return gdao;}
 
     // 그룹 생성
     public void insert(Group g){
@@ -27,6 +31,9 @@ public class GroupDao {
 
             pstmt.setLong(1, g.getMember_id());
             pstmt.setString(2, g.getGroup_name());
+
+            pstmt.executeUpdate();
+            System.out.println("그룹생성완료");
 
         } catch (SQLException e){
             e.printStackTrace();
@@ -50,6 +57,8 @@ public class GroupDao {
             pstmt.setString(1, group_name);
             pstmt.setLong(2, Group_id);
             pstmt.setLong(3, Member_id);
+
+            pstmt.executeUpdate();
             System.out.println("그룹명 수정 완료");
         } catch (SQLException e){
             e.printStackTrace();
@@ -65,7 +74,7 @@ public class GroupDao {
     // 그룹 삭제 (그룹장만 가능)
     public void delete(Long Group_id, Long Member_id){
         Connection conn = dbUtils.getConnection();
-        String sql = "delete `Group` where Group_id =? and Member_id=?";
+        String sql = "delete from `Group` where Id =? and Member_id=?";
 
         try{
             PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -137,13 +146,13 @@ public class GroupDao {
                 e.printStackTrace();
             }
         }
-        return null;
+        return list;
     }
 
     // 공지 생성, 수정
     public void notice(String notice, Long Group_id, Long Member_id){
         Connection conn = dbUtils.getConnection();
-        String sql = "update `Group` set Notice=? where Group_id=? and Member_id=?";
+        String sql = "update `Group` set Notice=? where Id=? and Member_id=?";
 
         try{
             PreparedStatement pstmt = conn.prepareStatement(sql);

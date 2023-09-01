@@ -25,7 +25,11 @@ public class TitleService {
         List<Title> titles = titleDao.findAllByMemberId(MemberService.loginId);
 
         for (int i = 0; i < titles.size(); i++) {
-            System.out.println(i + "." + titles.get(i) + " ");
+            System.out.println((i+1) + "." + titles.get(i).getTitleName() + " ");
+        }
+
+        if (titles.isEmpty()){
+            System.out.println("보유중인 칭호가 없습니다.");
         }
     }
 
@@ -42,7 +46,7 @@ public class TitleService {
         List<Title> titles = titleDao.findAllByMemberId(MemberService.loginId);
 
         for (int i = 0; i < titles.size(); i++) {
-            System.out.println(i + "." + titles.get(i) + " ");
+            System.out.println((i+1) + "." + titles.get(i).getTitleName() + " ");
         }
 
         System.out.print("적용할 타이틀을 선택하세요 : ");
