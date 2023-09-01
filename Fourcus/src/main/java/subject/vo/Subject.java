@@ -9,12 +9,12 @@ import lombok.Setter;
 public class Subject {
 
 
-    private long id;    // 과목 아이디
-    private long memberId;  // 멤버 아이디
+    private Long id;    // 과목 아이디
+    private Long memberId;  // 멤버 아이디
     private String subjectName;     // 과목명
 
     public Subject() {}
-    public Subject(long id, long memberId, String subjectName) {
+    public Subject(Long id, Long memberId, String subjectName) {
         this.id = id;
         this.memberId = memberId;
         this.subjectName = subjectName;
@@ -24,5 +24,12 @@ public class Subject {
     public String toString() {
         return
                "번" +  "과목명 : " + subjectName + '\'';
+    }
+
+    public String toString2() {
+        return "과목 {" +
+                "Id =" + memberId +
+                ", 과목명 ='" + subjectName + '\'' +
+                '}';
     }
 }

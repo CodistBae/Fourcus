@@ -16,7 +16,7 @@ public class Subjectdao {
     }
 
     // 과목 추가
-    public void insert(long memberId, String subjectName) {
+    public void insert(Long memberId, String subjectName) {
         Connection connection = dbUtils.getConnection();
         String sql = "insert into Subject(Member_id,Subject_name) values (?,?)";
 
@@ -37,7 +37,7 @@ public class Subjectdao {
     }
 
     // 과목 수정
-    public void update(String subjectName, long subjectId) {
+    public void update(String subjectName, Long subjectId) {
         Connection connection = dbUtils.getConnection();
         String sql = "update Subject set Subject_name = ? where Id = ?";
 
@@ -58,7 +58,7 @@ public class Subjectdao {
     }
 
     // 과목 삭제
-    public void delete(long subjectId) {
+    public void delete(Long subjectId) {
         Connection connection = dbUtils.getConnection();
         String sql = "delete Subject where Id = ?";
 
@@ -78,7 +78,7 @@ public class Subjectdao {
     }
 
     // 과목 번호로 검색 => 과목 객체 반환
-    public Subject select(long subjectId) {
+    public Subject select(Long subjectId) {
         Subject subject = null;
         Connection connection = dbUtils.getConnection();
         String sql = "select * from Subject where Id = ?";
@@ -105,7 +105,7 @@ public class Subjectdao {
 
 
     // 과목 전체 검색
-    public ArrayList<Subject> selectAll(long memberId) {
+    public ArrayList<Subject> selectAll(Long memberId) {
         ArrayList<Subject> list = new ArrayList<>();
         Connection connection = dbUtils.getConnection();
         String sql = "select * from Subject where Member_id = ?";

@@ -2,6 +2,7 @@ import group.service.GroupService;
 import groupmember.service.GroupMemberService;
 import member.service.MemberService;
 import studyhour.service.StudyHourService;
+import subject.service.SubjectService;
 import tamagotchi.service.TamagotchiService;
 import title.service.TitleService;
 
@@ -17,6 +18,8 @@ public class Main {
     static GroupService groupService;
     static GroupMemberService groupMemberService;
     static TitleService titleService;
+    static SubjectService subjectService;
+    static boolean bl;
 
     public static void main(String[] args) throws IllegalStateException {
         init();
@@ -46,7 +49,7 @@ public class Main {
 
                     switch (select) {
                         case 1 -> mypage(br);
-                        case 2 -> System.out.println("공부메뉴");
+                        case 2 -> study(br);
                         case 3 -> group(br);
                         case 4 -> tamagotchi(br);
                         case 5 -> memberService.Logout();
@@ -127,6 +130,55 @@ public class Main {
         }
     }
 
+    public static void study(BufferedReader br) throws IOException {
+        System.out.println("공부");
+        System.out.println("1.과목 관리  2.공부  3.누적 시간  4.최대 집중 시간");
+        System.out.print("메뉴를 선택하세요 : ");
+        int select = Integer.parseInt(br.readLine());
+        switch (select) {
+            case 1 -> subject(br);
+            case 2 -> studyMenu(br);
+            case 3 -> studyHourService.printCumulativeTime(br);
+            case 4 -> studyHourService.printTodayMaxTime();
+            default -> throw new IllegalStateException("Unexpected value: " + select);
+        }
+    }
+
+    public static void studyMenu(BufferedReader br) throws IOException {
+        System.out.println("공부메뉴");
+        System.out.println("1.공부시작  2.공부종료");
+        System.out.print("메뉴를 선택하세요 : ");
+        int select = Integer.parseInt(br.readLine());
+        switch (select) {
+            case 1 -> {
+                if(bl){
+                    System.out.println("먼저 공부를 종료하세요.");
+                } else {
+                    studyHourService.addStart(br);
+                    bl = true;
+                }
+            }
+            case 2 -> {
+                studyHourService.clickStop();
+                bl = false;
+            }
+            default -> throw new IllegalStateException("Unexpected value: " + select);
+        }
+    }
+
+    public static void subject(BufferedReader br) throws IOException {
+        System.out.println("과목");
+        System.out.println("1.과목 목록  2.과목 추가  3.과목 수정  4.과목 삭제");
+        System.out.print("메뉴를 선택하세요 : ");
+        int select = Integer.parseInt(br.readLine());
+        switch (select) {
+            case 1 -> subjectService.printAll();
+            case 2 -> subjectService.insertSubject(br);
+            case 3 -> subjectService.editSubjectName(br);
+            case 4 -> subjectService.delSubject(br);
+        }
+    }
+
     public static void init() {
         memberService = new MemberService();
         studyHourService = new StudyHourService();
@@ -134,6 +186,8 @@ public class Main {
         groupService = new GroupService();
         groupMemberService = new GroupMemberService();
         titleService = TitleService.getInstance();
+        subjectService = new SubjectService();
+        bl = false;
     }
 
 }
