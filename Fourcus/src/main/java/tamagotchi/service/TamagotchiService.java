@@ -11,10 +11,15 @@ import java.util.Scanner;
 
 public class TamagotchiService {
 
+    private static final TamagotchiService tamagotchiService = new TamagotchiService();
     private final TamagotchiDao tamagotchiDao;
 
-    public TamagotchiService() {
+    private TamagotchiService() {
         this.tamagotchiDao = TamagotchiDao.getInstance();
+    }
+
+    public static TamagotchiService getInstance(){
+        return tamagotchiService;
     }
 
     public void levelUpdate() {
@@ -58,7 +63,9 @@ public class TamagotchiService {
     }
 
     public Tamagotchi getTamagotchi() {
-        return tamagotchiDao.findByMemberId(MemberService.loginId);
+        Tamagotchi tamagotchi = tamagotchiDao.findByMemberId(MemberService.loginId);
+        System.out.println(tamagotchi);
+        return tamagotchi;
     }
 
     public void deleteTamagotchi() {
