@@ -81,7 +81,7 @@ public class Subjectdao {
     public Subject select(long subjectId) {
         Subject subject = null;
         Connection connection = dbUtils.getConnection();
-        String sql = "select * from Subject where Subject_id = ?";
+        String sql = "select * from Subject where Id = ?";
 
         try {
             PreparedStatement ps = connection.prepareStatement(sql);

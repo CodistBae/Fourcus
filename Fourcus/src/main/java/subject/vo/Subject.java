@@ -3,10 +3,11 @@ package subject.vo;
 
 import lombok.Getter;
 import lombok.Setter;
+@Getter
+@Setter
 
 public class Subject {
-    @Getter
-    @Setter
+
 
     private long id;    // 과목 아이디
     private long memberId;  // 멤버 아이디
@@ -21,10 +22,7 @@ public class Subject {
 
     @Override
     public String toString() {
-        return "Subject{" +
-                "id=" + id +
-                ", memberId=" + memberId +
-                ", subjectName='" + subjectName + '\'' +
-                '}';
+        return
+               "번" +  "과목명 : " + subjectName + '\'';
     }
 }
