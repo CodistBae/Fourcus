@@ -7,6 +7,7 @@ import title.vo.Title;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 public class TitleService {
     public static TitleService titleService = new TitleService();
@@ -29,7 +30,12 @@ public class TitleService {
     }
 
     public String getTitle() {
-        return "<전설>";
+        String title = titleDao.currentTitle(MemberService.loginId);
+        if(Objects.isNull(title)){
+            return "<" + title + ">";
+        }
+
+        return "";
     }
 
     public void selectTitle(BufferedReader br) throws IOException {

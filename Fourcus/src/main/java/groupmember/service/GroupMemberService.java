@@ -72,7 +72,7 @@ public class GroupMemberService {
     // 내 그룹원 확인(전체)
     public void printMyGroupMember() {
         System.out.println("==== 내 그룹원 전체 확인 ====");
-        ArrayList<GroupMember> list = dao.selectAll(Group_id);
+        List<GroupMember> list = dao.selectAll(Group_id);
         printAll(list);
     }
 
