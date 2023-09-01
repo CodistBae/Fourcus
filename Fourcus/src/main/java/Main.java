@@ -43,7 +43,7 @@ public class Main {
                     }
 
                 } else { //로그인 상태
-                    System.out.println("1.마이페이지 2.공부 3.그룹 4.다마고치 5.로그아웃");
+                    System.out.println("1.마이페이지 2.공부 3.그룹 4.다마고치 5.로그아웃 6.회원탈퇴");
                     System.out.print("메뉴를 선택하세요 : ");
                     int select = Integer.parseInt(br.readLine());
 
@@ -53,6 +53,7 @@ public class Main {
                         case 3 -> group(br);
                         case 4 -> tamagotchi(br);
                         case 5 -> memberService.Logout();
+                        case 6 -> memberService.delMember();
                         default -> throw new IllegalStateException("Unexpected value: " + select);
                     }
                 }

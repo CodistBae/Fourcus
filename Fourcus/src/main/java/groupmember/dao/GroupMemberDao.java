@@ -45,7 +45,7 @@ public class GroupMemberDao {
     }
 
     // 그룹멤버 추방 (내 그룹에 있는)
-    public void delete(long Member_id, Long Group_id) {
+    public void delete(Long Member_id, Long Group_id) {
 
         String sql = "delete from GroupMember where Member_id =? and Group_id =?";
 
@@ -65,7 +65,7 @@ public class GroupMemberDao {
 
 //* 공통기능 *//
     // 전체 검색 (내 그룹원들만) -> 누적시간까지 포함!
-    public List<GroupMember> selectAll(long Group_id) {
+    public List<GroupMember> selectAll(Long Group_id) {
         List<GroupMember> list = new ArrayList<>();
 
         String sql = """
@@ -93,7 +93,7 @@ public class GroupMemberDao {
         return list;
     }
     // 나와 같은 Group_id를 가진 그룹원 中 Member_id를 입력해서 멤버의 정보확인
-    public GroupMember selectGroupMember (long Member_id, long Group_id){
+    public GroupMember selectGroupMember (Long Member_id, Long Group_id){
 
         String sql = """
                 select gm.Id, gm.Member_id, gm.Group_id, Cumulative_time
@@ -122,7 +122,7 @@ public class GroupMemberDao {
     }
 
     // 내 그룹원인지 확인( Member_id -> Group_id)
-    public boolean checkMyGroup(long Member_id, long Group_id) {
+    public boolean checkMyGroup(Long Member_id, Long Group_id) {
 
         String sql = """
                 select * from GroupMember where Member_id =? and Group_id =? 
