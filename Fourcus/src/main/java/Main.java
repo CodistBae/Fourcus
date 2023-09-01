@@ -43,7 +43,7 @@ public class Main {
                     }
 
                 } else { //로그인 상태
-                    System.out.println("1.마이페이지 2.공부 3.그룹 4.다마고치 5.로그아웃");
+                    System.out.println("1.마이페이지 2.공부 3.그룹 4.다마고치 5.로그아웃 6.회원탈퇴");
                     System.out.print("메뉴를 선택하세요 : ");
                     int select = Integer.parseInt(br.readLine());
 
@@ -53,6 +53,7 @@ public class Main {
                         case 3 -> group(br);
                         case 4 -> tamagotchi(br);
                         case 5 -> memberService.Logout();
+                        case 6 -> memberService.delMember();
                         default -> throw new IllegalStateException("Unexpected value: " + select);
                     }
                 }
@@ -103,18 +104,23 @@ public class Main {
 
     public static void groupManage(BufferedReader br) throws IOException {
         System.out.println("그룹 관리");
-        groupService.selectGroup(br);
+        boolean bl = groupService.selectGroup(br);
 
-        System.out.println("1.그룹명 수정 2.공지사항 3.그룹원 관리 4.그룹 삭제");
-        System.out.print("메뉴를 선택하세요 : ");
-        int select = Integer.parseInt(br.readLine());
+        if(bl) {
 
-        switch (select) {
-            case 1 -> groupService.updateGroupName(br);
-            case 2 -> groupService.Notice(br);
-            case 3 -> groupMemberManage(br);
-            case 4 -> groupService.deleteGroup(br);
-            default -> throw new IllegalStateException("Unexpected value: " + select);
+            System.out.println("1.그룹명 수정 2.공지사항 3.그룹원 관리 4.그룹 삭제");
+            System.out.print("메뉴를 선택하세요 : ");
+            int select = Integer.parseInt(br.readLine());
+
+            switch (select) {
+                case 1 -> groupService.updateGroupName(br);
+                case 2 -> groupService.Notice(br);
+                case 3 -> groupMemberManage(br);
+                case 4 -> groupService.deleteGroup(br);
+                default -> throw new IllegalStateException("Unexpected value: " + select);
+            }
+        } else{
+            group(br);
         }
     }
 

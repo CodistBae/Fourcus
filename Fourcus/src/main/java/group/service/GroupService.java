@@ -31,10 +31,21 @@ public class GroupService {
     }
 
     // 그룹 선택
-    public void selectGroup(BufferedReader br) throws IOException {
-        MyGroupList();
-        System.out.print("관리할 그룹번호를 입력하세요: ");
-        groupId = Long.parseLong(br.readLine());
+    public boolean selectGroup(BufferedReader br) throws IOException {
+        boolean flag = false;
+        ArrayList<Group> list = MyGroupList();
+        if(list.size()!=0) {
+            for(Group g: list){
+                System.out.println(g);
+            }
+            System.out.print("관리할 그룹번호를 입력하세요: ");
+            groupId = Long.parseLong(br.readLine());
+            flag = true;
+            return flag;
+        } else {
+            System.out.println("내가 그룹장인 그룹이 없습니다.");
+            return flag;
+        }
     }
 
 
@@ -51,13 +62,16 @@ public class GroupService {
     }
 
     // 내가 그룹장인 그룹 리스트
-    public void MyGroupList() {
+    public ArrayList<Group> MyGroupList() {
         if (MemberService.loginId != null) {
             ArrayList<Group> list = dao.selectAll(MemberService.loginId);
+
             for (Group g : list)
                 System.out.println(g);
+            return list;
         } else {
             System.out.println("로그인 후 사용해주세요.");
+            return null;
         }
     }
 
