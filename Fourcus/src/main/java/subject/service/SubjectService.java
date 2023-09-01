@@ -32,7 +32,7 @@ public class SubjectService {
         System.out.println("====과목 리스트====");
         List<Subject> list = sjdao.selectAll(MemberService.loginId);
         for (int i = 0; i < list.size() ; i++) {
-            System.out.println(list.get(i));
+            System.out.println(i + "  " + list.get(i));
         }
         System.out.println("수정할 과목 번호를 입력하세요.");
         int num = Integer.parseInt(br.readLine());
@@ -52,9 +52,14 @@ public class SubjectService {
     // 과목 전체 출력
     public void printAll(){
         List<Subject> list = sjdao.selectAll(MemberService.loginId);
-        for(Subject s : list){
-            System.out.println(s.toString2());
+        if(list.isEmpty()){
+            System.out.println("과목을 먼저 추가해주세요.");
+        } else{
+            for(Subject s : list){
+                System.out.println(s.toString2());
+            }
         }
+
     }
 
     // 과목 삭제
@@ -63,7 +68,7 @@ public class SubjectService {
         System.out.println("====과목 리스트====");
         List<Subject> list = sjdao.selectAll(MemberService.loginId);
         for (int i = 0; i < list.size() ; i++) {
-            System.out.println(list.get(i));
+            System.out.println(i + "  " + list.get(i));
         }
 
         System.out.println("삭제할 과목 번호를 입력하세요.");

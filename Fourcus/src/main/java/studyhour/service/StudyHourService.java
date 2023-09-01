@@ -78,18 +78,16 @@ public class StudyHourService {
         LocalDateTime now = LocalDateTime.now().withNano(0);
         Time currentTime = Time.valueOf(now.toLocalTime());
 
-        // 종료시간 업데이트
-        shDao.stop(currentTime, today, subjectId);
-        System.out.println("종료 시간 : " + currentTime);
 
         // stopTime == null 이면 첫 시작이라는 말이니까 selectStartTime
         if (shDao.selectStopTime(today, subjectId) == null) {
             // 공부 시간 계산 ( 초로 저장 )
             shDao.stop(currentTime, today, subjectId);
+            System.out.println("종료 시간 : " + currentTime);
             Duration du = Duration.between(currentTime.toLocalTime(), shDao.selectStartTime(today, subjectId).toLocalTime());
             long studyTime = du.toSeconds();
             System.out.print("공부 시간은 ");
-            shDao.changeSec(studyTime);
+            shDao.changeSec(Math.abs(studyTime));
 
             // 누적 시간 업데이트
             long newCumulativeTime = studyTime + shDao.selectCumulativeTime(today, subjectId);
@@ -100,11 +98,15 @@ public class StudyHourService {
                 shDao.updateMax(studyTime, today, subjectId);
             }
         } else {
+            // 종료시간 업데이트
+            shDao.stop(currentTime, today, subjectId);
+            System.out.println("종료 시간 : " + currentTime);
+
             // 재시작한 경우
             Duration du = Duration.between(currentTime.toLocalTime(), shDao.selectRestartTime(today, subjectId).toLocalTime());
             long studyTime = du.toSeconds();
             System.out.print("공부 시간은 ");
-            shDao.changeSec(studyTime);
+            shDao.changeSec(Math.abs(studyTime));
 
             // 누적 시간 업데이트
             long newCumulativeTime = studyTime + shDao.selectCumulativeTime(today, subjectId);
@@ -201,7 +203,7 @@ public class StudyHourService {
             System.out.println("====최대 집중 시간====");
             System.out.print(today + " 최대 집중 시간은 ");
             shDao.changeSec(max);
-            System.out.print(" 입니다");
+            System.out.println(" 입니다");
         }
 
     }

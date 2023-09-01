@@ -60,7 +60,7 @@ public class Subjectdao {
     // 과목 삭제
     public void delete(Long subjectId) {
         Connection connection = dbUtils.getConnection();
-        String sql = "delete Subject where Id = ?";
+        String sql = "delete from Subject where Id = ?";
 
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
