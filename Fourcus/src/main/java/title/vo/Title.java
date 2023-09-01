@@ -13,4 +13,5 @@ public class Title {
     private long id;
     private long memberId;
     private String titleName;
+    private boolean select;
 }

@@ -31,7 +31,7 @@ public class TitleService {
 
     public String getTitle() {
         String title = titleDao.currentTitle(MemberService.loginId);
-        if(Objects.isNull(title)){
+        if(Objects.nonNull(title)){
             return "<" + title + ">";
         }
 
