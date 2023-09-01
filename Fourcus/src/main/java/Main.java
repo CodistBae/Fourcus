@@ -102,15 +102,41 @@ public class Main {
         System.out.println("그룹 관리");
         groupService.selectGroup(br);
 
-        System.out.println("1.그룹명 수정 2.공지사항 3.그룹 삭제");
+        System.out.println("1.그룹명 수정 2.공지사항 3.그룹원 관리 4.그룹 삭제");
         System.out.print("메뉴를 선택하세요 : ");
         int select = Integer.parseInt(br.readLine());
 
         switch (select) {
             case 1 -> groupService.updateGroupName(br);
             case 2 -> groupService.Notice(br);
-            case 3 -> groupService.deleteGroup(br);
+            case 3 -> groupMemberManage(br);
+            case 4 -> groupService.deleteGroup(br);
             default -> throw new IllegalStateException("Unexpected value: " + select);
+        }
+    }
+
+    public static void groupMemberManage(BufferedReader br) throws IOException {
+        System.out.println("그룹원 관리");
+
+        System.out.println("1.그룹원 확인 2.그룹원 프로필 3.그룹장 메뉴");
+        System.out.print("메뉴를 선택하세요 : ");
+        int select = Integer.parseInt(br.readLine());
+
+        switch (select){
+            case 1 -> groupMemberService.printMyGroupMember();
+            case 2 -> groupMemberService.printMyGroupMemberProfile(br);
+            case 3 -> groupMasterMenu(br);
+        }
+    }
+    public static void groupMasterMenu(BufferedReader br) throws IOException{
+        System.out.println("그룹장 메뉴");
+
+        System.out.println("1.그룹멤버 추가 2. 그룹멤버 추방");
+        int select = Integer.parseInt(br.readLine());
+
+        switch (select){
+            case 1 -> groupMemberService.addGroupMember(br);
+            case 2 -> groupMemberService.delGroupMember(br);
         }
     }
 
