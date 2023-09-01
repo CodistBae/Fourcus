@@ -39,7 +39,7 @@ public class Subjectdao {
     // 과목 수정
     public void update(String subjectName, long subjectId) {
         Connection connection = dbUtils.getConnection();
-        String sql = "update Subject set Subject_name = ? where Subject_id = ?";
+        String sql = "update Subject set Subject_name = ? where Id = ?";
 
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
@@ -60,7 +60,7 @@ public class Subjectdao {
     // 과목 삭제
     public void delete(long subjectId) {
         Connection connection = dbUtils.getConnection();
-        String sql = "delete Subject where Subject_id = ?";
+        String sql = "delete Subject where Id = ?";
 
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
