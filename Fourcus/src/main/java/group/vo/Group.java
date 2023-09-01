@@ -1,6 +1,5 @@
 package group.vo;
 import lombok.*;
-@NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter

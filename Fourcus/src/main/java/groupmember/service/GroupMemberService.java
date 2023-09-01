@@ -15,7 +15,7 @@ import java.util.List;
 public class GroupMemberService {
     private GroupMemberDao dao;
     private MemberDao mdao;
-    public static long Group_id = GroupService.groupId;
+    public static Long Group_id = GroupService.groupId;
 
     public GroupMemberService() {
         dao = new GroupMemberDao();
