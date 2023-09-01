@@ -37,8 +37,9 @@ public class GroupMemberService {
                 if (dao.checkMyGroup(m.getId(), GroupService.groupId)) {
                     System.out.printf("이미 %s에 소속된 멤버입니다", GroupService.groupId);
                 } else {
-                    dao.insert(username, GroupService.groupId);
-                    System.out.printf("%s님 추가완료", username);
+
+                    dao.insert(m.getId(),username, GroupService.groupId);
+                    System.out.println(username +"님 추가완료");
                 }
                 break;
             }
@@ -58,7 +59,7 @@ public class GroupMemberService {
             } else {
                 if (dao.checkMyGroup(m.getId(), GroupService.groupId)) {
                     dao.delete(m.getId(), GroupService.groupId);
-                    System.out.printf("%s님 추가완료", username);
+                    System.out.println(username+"님 추방완료");
                 } else {
                     System.out.println("소속된 멤버가 아님");
                 }
