@@ -13,7 +13,7 @@ public class GroupService {
     public static Long groupId;
 
     public GroupService() {
-        dao = new GroupDao();
+        dao = GroupDao.getInstance();
         groupId = null;
     }
 
