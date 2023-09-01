@@ -32,8 +32,8 @@ public class TitleDao {
         }
     }
 
-    public Title currentTitle(long memberId) {
-        String sql = "select * from Title where member_id = ? and select = true";
+    public String currentTitle(long memberId) {
+        String sql = "select * from Title where member_id = ? and Select = true";
         try (Connection connection = dbUtils.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
 
@@ -41,13 +41,11 @@ public class TitleDao {
             ResultSet resultSet = ps.executeQuery();
 
             if (resultSet.next()) {
-                int id2 = resultSet.getInt(1); // 컬럼값 꺼내는 메서드. get컬럼타입(컬럼순서)
-                String name = resultSet.getString(2);
-                int departmentId = resultSet.getInt(3);
+                String titleName = resultSet.getString(3);
+                return titleName;
             }
 
             System.out.println("CurrentTitle find!!");
-
         } catch (SQLException e) {
             e.printStackTrace();
         }

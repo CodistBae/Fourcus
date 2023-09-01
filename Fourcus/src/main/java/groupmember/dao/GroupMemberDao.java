@@ -4,6 +4,7 @@ import groupmember.vo.GroupMember;
 import common.DbUtils;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class GroupMemberDao {
     private DbUtils dbUtils;
@@ -59,8 +60,8 @@ public class GroupMemberDao {
 
 //* 공통기능 *//
     // 전체 검색 (내 그룹원들만) -> 누적시간까지 포함!
-    public ArrayList<GroupMember> selectAll(long Group_id) {
-        ArrayList<GroupMember> list = new ArrayList<>();
+    public List<GroupMember> selectAll(long Group_id) {
+        List<GroupMember> list = new ArrayList<>();
 
         String sql = """
                 select gm.Id, gm.Member_id, gm.Group_id, Cumulative_time
