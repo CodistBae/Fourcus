@@ -1,14 +1,14 @@
 package group.vo;
 import lombok.*;
-@NoArgsConstructor
+//@NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @ToString
 
 public class Group {
-    private long Id;
-    private long Member_id;
+    private Long Id;
+    private Long Member_id;
     private String Group_name;
     private String notice;
 
