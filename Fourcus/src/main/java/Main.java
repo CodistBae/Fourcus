@@ -91,13 +91,14 @@ public class Main {
 
     public static void group(BufferedReader br) throws IOException {
         System.out.println("그룹");
-        System.out.println("1.그룹 생성 2.그룹 검색 3.그룹 관리");
+        System.out.println("1.그룹 생성 2.그룹 검색 3.그룹 관리 4.내 그룹원 확인");
         System.out.print("메뉴를 선택하세요 : ");
         int select = Integer.parseInt(br.readLine());
         switch (select) {
             case 1 -> groupService.createGroup(br);
             case 2 -> groupService.searchGroup(br);
             case 3 -> groupManage(br);
+            case 4 -> groupMemberService.printMyGroupMember();
             default -> throw new IllegalStateException("Unexpected value: " + select);
         }
     }

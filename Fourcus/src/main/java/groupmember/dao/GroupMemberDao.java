@@ -69,11 +69,13 @@ public class GroupMemberDao {
         List<GroupMember> list = new ArrayList<>();
 
         String sql = """
-                select gm.Id, gm.Member_id, gm.Group_id, Cumulative_time
-                from GroupMember gm
-                join `Group` g on g.id = gm.Group_id
-                where gm.Group_id = ?
+                select gm.Id, gm.Member_id, gm.Group_id, sum(sh.Cumulative_time) from `Member` m
+                        join GroupMember gm on m.Id = gm.Member_id
+                        join `Subject` s on s.Member_id = m.Id
+                        join StudyHour sh on s.Id = sh.Subject_id
+                        where gm.Group_id = ?
                 """;
+
         try (Connection connection = dbUtils.getConnection();
              PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setLong(1, Group_id);
