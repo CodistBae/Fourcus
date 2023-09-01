@@ -25,4 +25,11 @@ public class Subject {
         return
                "번" +  "과목명 : " + subjectName + '\'';
     }
+
+    public String toString2() {
+        return "과목 {" +
+                "Id =" + memberId +
+                ", 과목명 ='" + subjectName + '\'' +
+                '}';
+    }
 }
