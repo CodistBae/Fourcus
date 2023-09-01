@@ -28,7 +28,7 @@ public class Subject {
 
     public String toString2() {
         return "과목 {" +
-                "번호 =" + memberId +
+                "번호 =" + id +
                 ", 과목명 ='" + subjectName + '\'' +
                 '}';
     }

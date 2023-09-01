@@ -62,6 +62,13 @@ public class SubjectService {
 
     }
 
+    // 과목 비어있는지 확인
+    public ArrayList<Subject> checkSubject(){
+        ArrayList<Subject> list = sjdao.selectAll(MemberService.loginId);
+        return list;
+    }
+
+
     // 과목 삭제
     public void delSubject(BufferedReader br) throws IOException {
         System.out.println("====과목 삭제====");
