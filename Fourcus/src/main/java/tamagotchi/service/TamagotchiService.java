@@ -5,16 +5,23 @@ import tamagotchi.dao.TamagotchiDao;
 import tamagotchi.vo.Tamagotchi;
 import tamagotchi.vo.Type;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
 import java.util.Scanner;
 
 public class TamagotchiService {
 
+    private static final TamagotchiService tamagotchiService = new TamagotchiService();
     private final TamagotchiDao tamagotchiDao;
 
-    public TamagotchiService() {
+    private TamagotchiService() {
         this.tamagotchiDao = TamagotchiDao.getInstance();
+    }
+
+    public static TamagotchiService getInstance(){
+        return tamagotchiService;
     }
 
     public void levelUpdate() {
@@ -32,23 +39,23 @@ public class TamagotchiService {
         tamagotchiDao.modify(tamagotchi);
     }
 
-    public void nickNameChange(Scanner sc) {
+    public void nickNameChange(BufferedReader br) throws IOException {
         Tamagotchi tamagotchi = getTamagotchi();
         System.out.print("변경할 타마고치 이름을 입력 : ");
-        tamagotchi.setTamagotchiName(sc.nextLine());
+        tamagotchi.setTamagotchiName(br.readLine());
 
         tamagotchiDao.modify(tamagotchi);
     }
 
-    public void typeChange(Scanner sc) {
+    public void typeChange(BufferedReader br) throws IOException {
         Tamagotchi tamagotchi = getTamagotchi();
         System.out.println("변경할 타마고치 타입 선택 1.사과 2.바나나 3.나무");
 
-        int select = sc.nextInt();
+        int select = Integer.parseInt(br.readLine());
         Type type = switch (select) {
-            case 1 -> Type.valueOf("사과");
-            case 2 -> Type.valueOf("바나나");
-            case 3 -> Type.valueOf("나무");
+            case 1 -> Type.valueOf("apple");
+            case 2 -> Type.valueOf("banana");
+            case 3 -> Type.valueOf("tree");
             default -> throw new IllegalStateException("Unexpected value: " + select);
         };
 
@@ -58,7 +65,9 @@ public class TamagotchiService {
     }
 
     public Tamagotchi getTamagotchi() {
-        return tamagotchiDao.findByMemberId(MemberService.loginId);
+        Tamagotchi tamagotchi = tamagotchiDao.findByMemberId(MemberService.loginId);
+        System.out.println(tamagotchi);
+        return tamagotchi;
     }
 
     public void deleteTamagotchi() {

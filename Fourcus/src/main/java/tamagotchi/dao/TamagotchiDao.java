@@ -72,7 +72,7 @@ public class TamagotchiDao {
                 long id = resultSet.getLong(1);
                 String tamagotchiName = resultSet.getString(3);
                 int level = resultSet.getInt(4);
-                Type type = Type.valueOf(resultSet.getString(5));
+                Type type = Type.returnType(resultSet.getString(5));
 
                 return Tamagotchi.builder()
                         .id(id)
