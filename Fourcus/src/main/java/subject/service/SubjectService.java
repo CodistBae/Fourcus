@@ -36,7 +36,7 @@ public class SubjectService {
         }
         System.out.println("수정할 과목 번호를 입력하세요.");
         int num = sc.nextInt();
-        if(num > list.size()-1) {
+        if(num < 0 || num > list.size()-1) {
             System.out.println("잘못 입력하셨습니다.");
         } else{
             System.out.println("새로운 과목명을 입력하세요.");
@@ -69,7 +69,7 @@ public class SubjectService {
         System.out.println("삭제할 과목 번호를 입력하세요.");
         int num = sc.nextInt();
         // list.size() = 3 인데 num = 3 해버리면 3>3이 x 삭제가 되어버림
-        if(num > list.size()-1) {
+        if(num <0 || num > list.size()-1) {
             System.out.println("잘못 입력하셨습니다.");
         } else {
             sjdao.delete(list.get(num).getId());
