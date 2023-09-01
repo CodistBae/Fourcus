@@ -25,7 +25,11 @@ public class TitleService {
         List<Title> titles = titleDao.findAllByMemberId(MemberService.loginId);
 
         for (int i = 0; i < titles.size(); i++) {
-            System.out.println(i + "." + titles.get(i) + " ");
+            System.out.println(i + "." + titles.get(i).getTitleName() + " ");
+        }
+
+        if (titles.isEmpty()){
+            System.out.println("보쥬중인 칭호가 없습니다.");
         }
     }
 
