@@ -108,16 +108,6 @@ public class MemberService {
         }
     }
 
-    // 회원 정보 수정(칭호)
-    public void updateTitle(Scanner sc) {
-        System.out.println("=====칭호 변경=====");
-        if (loginId != null) {
-
-        } else {
-            System.out.println("로그인 후 사용해주세요.");
-        }
-    }
-
     // 회원 정보 수정(카테고리)
     public void updateCategory(Scanner sc) {
         if (loginId != null) {

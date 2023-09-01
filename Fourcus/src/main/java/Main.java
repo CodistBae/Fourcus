@@ -53,13 +53,14 @@ public class Main {
     }
 
     public static void mypage(Scanner sc) {
-        System.out.println("1.닉네임 변경 2.비밀번호 변경 3.칭호");
+        System.out.println("1.닉네임 변경 2.비밀번호 변경 3.칭호 4.카테고리 변경");
         System.out.print("메뉴를 선택하세요 : ");
         int select = sc.nextInt();
         switch (select) {
             case 1 -> memberService.updateNickname(sc);
             case 2 -> memberService.updatePwd(sc);
             case 3 -> title(sc);
+            case 4 -> memberService.updateCategory(sc);
             default -> throw new IllegalStateException("Unexpected value: " + select);
         }
     }
