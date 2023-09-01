@@ -59,7 +59,7 @@ public class MemberDao {
             pstmt.setLong(1, id);
             ResultSet rs = pstmt.executeQuery();
             if(rs.next())
-                return new Member(rs.getLong(1), rs.getString(3), rs.getString(5),
+                return new Member(rs.getLong(1), rs.getString(3), rs.getString(4), rs.getString(5),
                                     rs.getString(6), rs.getString(7), rs.getLong(2));
         } catch (SQLException e) {
             e.printStackTrace();
@@ -80,10 +80,10 @@ public class MemberDao {
         String sql = "";
         switch (num){
             case 1:
-                sql = "select * from Member where username=?";
+                sql = "select * from Member where Username=?";
                 break;
             case 2:
-                sql = "select * from Member where nickname=?";
+                sql = "select * from Member where Nickname=?";
                 break;
         }
 
@@ -94,8 +94,8 @@ public class MemberDao {
 
             ResultSet rs = pstmt.executeQuery();
             if (rs.next())
-                return new Member(rs.getLong(1), rs.getString(3), rs.getString(4),
-                                rs.getString(5), rs.getString(6), rs.getString(7));
+                return new Member(rs.getLong(1), rs.getString(3), rs.getString(4), rs.getString(5),
+                        rs.getString(6), rs.getString(7), rs.getLong(2));
         } catch (SQLException e){
             e.printStackTrace();
         } finally {
@@ -106,11 +106,6 @@ public class MemberDao {
             }
         }
         return null;
-    }
-
-    // 회원 정보 수정(칭호)
-    public void updateTitle(String username){
-
     }
 
     // 회원 정보 수정(비밀번호)
@@ -164,7 +159,7 @@ public class MemberDao {
     // 회원 정보 수정(카테고리)
     public void updateCategory(Long id, Long category_id){
         Connection conn = dbconn.getConnection();
-        String sql = "update Memger set Category_id=? where id=?";
+        String sql = "update Memger set Category_id=? where Id=?";
 
         try{
             PreparedStatement pstmt = conn.prepareStatement(sql);
