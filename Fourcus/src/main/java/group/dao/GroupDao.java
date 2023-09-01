@@ -13,9 +13,13 @@ import java.util.ArrayList;
 public class GroupDao {
     private DbUtils dbUtils;
 
-    public GroupDao(){
+    private static GroupDao gdao = new GroupDao();
+
+    private GroupDao(){
         dbUtils = DbUtils.getInstance();
     }
+
+    public static GroupDao getInstance(){ return gdao;}
 
     // 그룹 생성
     public void insert(Group g){

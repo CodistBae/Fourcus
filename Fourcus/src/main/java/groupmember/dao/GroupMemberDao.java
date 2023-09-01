@@ -2,7 +2,6 @@ package groupmember.dao;
 
 import groupmember.vo.GroupMember;
 import common.DbUtils;
-import member.service.MemberService;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -10,9 +9,12 @@ import java.util.List;
 
 public class GroupMemberDao {
     private DbUtils dbUtils;
-    public GroupMemberDao(){
+    private static GroupMemberDao gmdao = new GroupMemberDao();
+    private GroupMemberDao(){
         dbUtils = DbUtils.getInstance();
     }
+
+    public static GroupMemberDao getInstance(){return gmdao;}
 
 //* 그룹장의 기능 *//
     // 멤버 추가 (해당 그룹에 해당 멤버가 없어야함)

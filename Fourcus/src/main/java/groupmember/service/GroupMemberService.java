@@ -17,7 +17,7 @@ public class GroupMemberService {
     private MemberDao mdao;
 
     public GroupMemberService() {
-        dao = new GroupMemberDao();
+        dao = GroupMemberDao.getInstance();
         mdao = MemberDao.getInstance();
     }
     // 기본적으로 Group_id를 갖고있는 상태
