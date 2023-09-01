@@ -12,4 +12,15 @@ public enum Type {
     public String getName() {
         return this.name;
     }
+
+    public static Type returnType(String name) {
+        Type[] values = Type.values();
+        for (Type loop : values) {
+            if (name.equals(loop.getName())) {
+                return loop;
+            }
+        }
+
+        return null;
+    }
 }

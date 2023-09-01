@@ -46,9 +46,9 @@ public class TamagotchiService {
 
         int select = sc.nextInt();
         Type type = switch (select) {
-            case 1 -> Type.valueOf("사과");
-            case 2 -> Type.valueOf("바나나");
-            case 3 -> Type.valueOf("나무");
+            case 1 -> Type.valueOf("apple");
+            case 2 -> Type.valueOf("banana");
+            case 3 -> Type.valueOf("tree");
             default -> throw new IllegalStateException("Unexpected value: " + select);
         };
 
