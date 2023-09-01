@@ -2,11 +2,7 @@ package groupmember.dao;
 
 import groupmember.vo.GroupMember;
 import common.DbUtils;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 
 public class GroupMemberDao {
@@ -15,81 +11,129 @@ public class GroupMemberDao {
         dbUtils = DbUtils.getInstance();
     }
 
-    // 멤버 추가
-    public void insert(GroupMember gb){
+    // 그룹장의 기능
+// 멤버 추가 (해당 그룹에 해당 멤버가 없어야함)
+    public void insert(String username, long Group_id) { // 그룹원의idx, Member_id, Group_id, Cumulative_time
 
-        String sql = "insert into GroupMember values(null, ?,?,?)";
-        try(Connection connection =dbUtils.getConnection();
-            PreparedStatement pstmt = connection.prepareStatement(sql)){
+        String sql = """
+                insert into GroupMember(Member_id, Cumulative_time, Group_id) 
+                values(?,
+                        (select sum(sh.Cumulative_time) from `Member` m
+                        join `Subject` s on s.Member_id = m.Id
+                        join StudyHour sh on s.Id = sh.Subject_id
+                        where m.Username = ?),
+                        ?)
+                """;
 
-            pstmt.setString(1, gb.getMember_id()); //
+        try (Connection connection = dbUtils.getConnection();
+             PreparedStatement pstmt = connection.prepareStatement(sql)) {
 
-        } catch (SQLException e){
+            pstmt.setString(1, username); //
+            pstmt.setLong(2, Group_id);
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+
+        }
+    }
+    // 그룹멤버 추방 (내 그룹에 있는)
+    public void delete(long Member_id, long Group_id) {
+
+        String sql = "delete GroupMember where Member_id =? and Group_id =?";
+
+        try (Connection connection = dbUtils.getConnection();
+             PreparedStatement pstmt = connection.prepareStatement(sql)) {
+
+            pstmt.setLong(1, Member_id); //
+            pstmt.setLong(2, Group_id);
+
+            int cnt = pstmt.executeUpdate();
+            System.out.printf("%s님 추방 완료", Member_id);
+
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
-    //  그룹원 select (그룹원 id로 -> 해당 그룹원의 정보 확인)
-    public GroupMember select (long Group_id){
-        String sql = "select * from GroupMember where Group_id = ?";
-        try(Connection connection =dbUtils.getConnection();
-            PreparedStatement pstmt = connection.prepareStatement(sql)){
 
-            ResultSet rs = pstmt.executeQuery();
 
-            if (rs.next()){
+    //* 공통기능 *//
+    // 나와 같은 Group_id를 가진 그룹원 中 Member_id를 입력해서 GroupMember 테이블 가져오기
+    // 전체 검색 (내 그룹원들만) -> 누적시간까지 포함!
 
-                return new GroupMember(
-                        rs.getLong(1), // Id
-                        rs.getString(2), // Member_id
-                        rs.getString(3), // Group_name
-                        rs.getTime(4) // 누적 시간
-                );
-            }
-        } catch (SQLException e){
-            throw new RuntimeException(e);
-        }
-        return null;
-    }
-    // 전체 검색
-    public ArrayList<GroupMember> selectAll(){
+    public ArrayList<GroupMember> selectAll(long Group_id) {
         ArrayList<GroupMember> list = new ArrayList<>();
 
-        String sql = "select * from GroupMember";
-
-        try(Connection connection =dbUtils.getConnection();
-            PreparedStatement pstmt = connection.prepareStatement(sql)){
+        String sql = """
+                select gm.Id, gm.Member_id, gm.Group_id, Cumulative_time
+                from GroupMember gm
+                join `Group` g on g.id = gm.Group_id
+                where gm.Group_id = ?
+                """;
+        try (Connection connection = dbUtils.getConnection();
+             PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setLong(1, Group_id);
 
             ResultSet rs = pstmt.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 list.add(new GroupMember(
                         rs.getLong(1), // Id
-                        rs.getString(2), // Member_id
-                        rs.getString(3), // Group_name
-                        rs.getTime(4) // Cumulative_time
+                        rs.getLong(2), // Member_id
+                        rs.getLong(3), // Group_name
+                        rs.getLong(4) // Cumulative_time
                 ));
             }
-        } catch(SQLException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return list;
     }
-    // 그룹멤버 추방
-    public void delete(long Group_id){
 
-        String sql = "delete GroupMember where Group_id =?";
+    // 내 그룹원인지 확인( Member_id -> Group_id)
+    public boolean checkMyGroup(long Member_id, long Group_id) {
 
-        try(Connection connection =dbUtils.getConnection();
-            PreparedStatement pstmt = connection.prepareStatement(sql)){
+        String sql = """
+                select * from GroupMember where Member_id =? and Group_id =? 
+                """;
+        try (Connection connection = dbUtils.getConnection();
+             PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setLong(1, Member_id);
+            pstmt.setLong(2, Group_id);
 
+            ResultSet rs = pstmt.executeQuery();
 
-            int cnt = pstmt.executeUpdate();
-            System.out.printf("%s님 추방 완료", Group_id);
-        } catch(SQLException e) {
+            if (rs.next()) {
+                if (rs.getInt(3) == Group_id) return true;
+                else return false;
+
+            } else return false;
+
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
-// 그룹의 누적시간 가져오기 ?
-
-
-
+//// 그룹의 누적시간 가져오기 ?
+//    public ArrayList<Long> selectCumTime(){
+//        ArrayList<Long> list = new ArrayList<>();
+//        String sql = " select a.Cumulative_time from GroupMember g \n" +
+//                "join `Subject` s on g.Member_id = s.member_id\n" +
+//                "join StudyHour a on s.id = a.subject_id\n" +
+//                "where g.Group_id = ?";
+//
+//        try(Connection connection =dbUtils.getConnection();
+//            PreparedStatement pstmt = connection.prepareStatement(sql)){
+//
+//            ResultSet rs = pstmt.executeQuery();
+//            while(rs.next()){
+//                list.add(new GroupMember(
+//                        rs.getLong(1), // Id
+//                        rs.getLong(2), // Member_id
+//                        rs.getLong(3), // Group_name
+//                        rs.getLong(4) // Cumulative_time
+//                ));
+//            }
+//        } catch(SQLException e) {
+//            throw new RuntimeException(e);
+//        }
+//        return list;
+//    }
 }
