@@ -10,9 +10,14 @@ import java.sql.SQLException;
 
 public class MemberDao {
     private DbUtils dbconn;
+    private static MemberDao mdao = new MemberDao();
 
-    public MemberDao() {
+    private MemberDao() {
         dbconn = DbUtils.getInstance();
+    }
+
+    public static MemberDao getInstance(){
+        return mdao;
     }
 
     // 회원가입

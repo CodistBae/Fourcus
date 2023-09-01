@@ -14,19 +14,7 @@ public class TamagotchiService {
     private final TamagotchiDao tamagotchiDao;
 
     public TamagotchiService() {
-        this.tamagotchiDao = new TamagotchiDao();
-    }
-
-    public void createTamagotchi(Scanner sc) {
-        tamagotchiDao.insert(
-                Tamagotchi.builder()
-                        .id(1)
-                        .memberId(MemberService.loginId)
-                        .tamagotchiName("이름을 바꿔줘욤")
-                        .level(1)
-                        .type(Type.tree)
-                        .build()
-        );
+        this.tamagotchiDao = TamagotchiDao.getInstance();
     }
 
     public void levelUpdate() {
