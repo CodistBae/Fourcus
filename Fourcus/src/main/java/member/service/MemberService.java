@@ -5,22 +5,26 @@ import member.vo.Member;
 import tamagotchi.dao.TamagotchiDao;
 import tamagotchi.vo.Tamagotchi;
 import tamagotchi.vo.Type;
+import title.service.TitleService;
 
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
 
 public class MemberService {
     private final TamagotchiDao tamagotchiDao;
     private MemberDao dao;
     public static Long loginId;
+    public TitleService titleService;
 
     public MemberService() {
         dao = MemberDao.getInstance();
         loginId = null;
         this.tamagotchiDao = TamagotchiDao.getInstance();
+        this.titleService = TitleService.getInstance();
     }
 
     // 회원가입
-    public void join(Scanner sc) {
+    public void join(BufferedReader br) throws IOException {
         if (loginId == null) {
             System.out.println("=====회원 가입=====");
             String username = "";
@@ -28,22 +32,22 @@ public class MemberService {
             Member m = null;
             do {
                 System.out.print("ID: ");
-                username = sc.next();
+                username = br.readLine();
                 m = dao.select(1, username);
             } while (m != null);
             System.out.print("PASSWORD: ");
-            String password = sc.next();
+            String password = br.readLine();
             m = null;
             do {
                 System.out.print("닉네임: ");
-                nickname = sc.next();
+                nickname = br.readLine();
                 m = dao.select(2, nickname);
             } while (m != null);
             System.out.print("email: ");
-            String email = sc.next();
+            String email = br.readLine();
             System.out.println("1.학생 2.취준생 3.자격증준비");
             System.out.print("카테고리: ");
-            Long category_id = sc.nextLong();
+            Long category_id = Long.valueOf(br.readLine());
 
             dao.insert(new Member(username, password, nickname, email, category_id));
             tamagotchiDao.insert(
@@ -63,22 +67,22 @@ public class MemberService {
     }
 
     // 회원 검색
-    public void searchMember(Scanner sc) {
+    public void searchMember(BufferedReader br) throws IOException {
         System.out.println("=====회원 검색=====");
         System.out.print("검색할 회원 닉네임: ");
-        String nickname = sc.next();
+        String nickname = br.readLine();
         System.out.println(dao.select(2, nickname));
     }
 
     // 회원 정보 수정(비밀번호)
-    public void updatePwd(Scanner sc) {
+    public void updatePwd(BufferedReader br) throws IOException {
         System.out.println("=====비밀번호 변경=====");
         if (loginId != null) {
             Member m = dao.selectById(loginId);
             System.out.print("새로운 비밀번호: ");
-            String new_pwd = sc.next();
+            String new_pwd = br.readLine();
             System.out.print("비밀번호 확인: ");
-            String check_pwd = sc.next();
+            String check_pwd = br.readLine();
             if (check_pwd.equals(new_pwd)) {
                 dao.updatePwd(new_pwd, loginId);
             } else {
@@ -90,7 +94,7 @@ public class MemberService {
     }
 
     // 회원 정보 수정(닉네임)
-    public void updateNickname(Scanner sc) {
+    public void updateNickname(BufferedReader br) throws IOException {
         System.out.println("=====닉네임 변경=====");
         if (loginId != null) {
             Member m = dao.selectById(loginId);
@@ -98,7 +102,7 @@ public class MemberService {
             Member m2 = null;
             do {
                 System.out.print("변경할 닉네임: ");
-                nickname = sc.next();
+                nickname = br.readLine();
                 m2 = dao.select(2, nickname);
             } while (m2 != null);
 
@@ -108,13 +112,23 @@ public class MemberService {
         }
     }
 
+    // 회원 정보 수정(칭호)
+    public void updateTitle(BufferedReader br) {
+        System.out.println("=====칭호 변경=====");
+        if (loginId != null) {
+
+        } else {
+            System.out.println("로그인 후 사용해주세요.");
+        }
+    }
+
     // 회원 정보 수정(카테고리)
-    public void updateCategory(Scanner sc) {
+    public void updateCategory(BufferedReader br) throws IOException {
         if (loginId != null) {
             System.out.println("=====카테고리 변경=====");
             Member m = dao.selectById(loginId);
             System.out.print("1.학생 2.취준생 3.자격증준비");
-            Long c_id = sc.nextLong();
+            Long c_id = Long.valueOf(br.readLine());
             dao.updateCategory(loginId, c_id);
         } else {
             System.out.println("로그인 후 사용해주세요.");
@@ -122,13 +136,13 @@ public class MemberService {
     }
 
     // 로그인
-    public void Login(Scanner sc) {
+    public void Login(BufferedReader br) throws IOException {
         if (loginId == null) {
             System.out.println("=====로그인=====");
             System.out.print("ID: ");
-            String username = sc.next();
+            String username = br.readLine();
             System.out.print("PASSWORD: ");
-            String password = sc.next();
+            String password = br.readLine();
 
             Member m = dao.select(1, username);
             if (password.equals(m.getPassword())) {
@@ -156,5 +170,12 @@ public class MemberService {
         } else {
             System.out.println("로그인 후 사용해주세요.");
         }
+    }
+
+    public void printMember(){
+        System.out.println("=====내 정보 확인=====");
+        String title = titleService.getTitle();// 타이틀 가공해주세요.!!
+        Member member = dao.selectById(loginId);
+        System.out.println(title + " " + member.getUsername());
     }
 }
