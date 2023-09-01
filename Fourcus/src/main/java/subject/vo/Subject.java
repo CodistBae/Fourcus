@@ -23,12 +23,12 @@ public class Subject {
     @Override
     public String toString() {
         return
-               "번" +  "과목명 : " + subjectName + '\'';
+               "번 " +  " 과목명 = '" + subjectName + '\'';
     }
 
     public String toString2() {
         return "과목 {" +
-                "Id =" + memberId +
+                "번호 =" + memberId +
                 ", 과목명 ='" + subjectName + '\'' +
                 '}';
     }
