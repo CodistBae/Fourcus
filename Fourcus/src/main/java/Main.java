@@ -1,3 +1,4 @@
+import group.service.GroupService;
 import groupmember.service.GroupMemberService;
 import member.service.MemberService;
 import studyhour.service.StudyHourService;
@@ -13,6 +14,7 @@ public class Main {
     static MemberService memberService;
     static StudyHourService studyHourService;
     static TamagotchiService tamagotchiService;
+    static GroupService groupService;
     static GroupMemberService groupMemberService;
     static TitleService titleService;
 
@@ -45,7 +47,7 @@ public class Main {
                     switch (select) {
                         case 1 -> mypage(br);
                         case 2 -> System.out.println("공부메뉴");
-//                        case 3 ->;
+                        case 3 -> group(br);
                         case 4 -> tamagotchi(br);
                         case 5 -> memberService.Logout();
                         default -> throw new IllegalStateException("Unexpected value: " + select);
@@ -84,7 +86,32 @@ public class Main {
     }
 
     public static void group(BufferedReader br) throws IOException{
-        System.out.println();
+        System.out.println("그룹");
+        System.out.println("1.그룹 생성 2.그룹 검색 3.그룹 관리");
+        System.out.print("메뉴를 선택하세요 : ");
+        int select = Integer.parseInt(br.readLine());
+        switch (select) {
+            case 1 -> groupService.createGroup(br);
+            case 2 -> groupService.searchGroup(br);
+            case 3 -> groupManage(br);
+            default -> throw new IllegalStateException("Unexpected value: " + select);
+        }
+    }
+    
+    public static void groupManage(BufferedReader br) throws IOException{
+        System.out.println("그룹 관리");
+        groupService.selectGroup(br);
+
+        System.out.println("1.그룹명 수정 2.공지사항 3.그룹 삭제");
+        System.out.print("메뉴를 선택하세요 : ");
+        int select = Integer.parseInt(br.readLine());
+
+        switch (select) {
+            case 1 -> groupService.updateGroupName(br);
+            case 2 -> groupService.Notice(br);
+            case 3 -> groupService.deleteGroup(br);
+            default -> throw new IllegalStateException("Unexpected value: " + select);
+        }
     }
 
     public static void tamagotchi(BufferedReader br) throws IOException {
@@ -104,6 +131,7 @@ public class Main {
         memberService = new MemberService();
         studyHourService = new StudyHourService();
         tamagotchiService = TamagotchiService.getInstance();
+        groupService = new GroupService();
         groupMemberService = new GroupMemberService();
         titleService = TitleService.getInstance();
     }
