@@ -3,8 +3,10 @@ package title.dao;
 import common.DbUtils;
 import title.vo.Title;
 
-import java.sql.*;
-import java.time.LocalDate;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +35,7 @@ public class TitleDao {
     }
 
     public String currentTitle(long memberId) {
-        String sql = "select * from Title where member_id = ? and Select = true";
+        String sql = "select * from Title where member_id = ? and `Select` = true";
         try (Connection connection = dbUtils.getConnection();
              PreparedStatement ps = connection.prepareStatement(sql)) {
 

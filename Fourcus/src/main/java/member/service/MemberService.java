@@ -176,6 +176,6 @@ public class MemberService {
         System.out.println("=====내 정보 확인=====");
         String title = titleService.getTitle();// 타이틀 가공해주세요.!!
         Member member = dao.selectById(loginId);
-        System.out.println(title + " " + member.getUsername());
+        System.out.println(title + " " + member.getNickname());
     }
 }
