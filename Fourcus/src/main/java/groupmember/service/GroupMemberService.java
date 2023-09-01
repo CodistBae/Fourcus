@@ -15,7 +15,6 @@ import java.util.List;
 public class GroupMemberService {
     private GroupMemberDao dao;
     private MemberDao mdao;
-    public static Long Group_id = GroupService.groupId;
 
     public GroupMemberService() {
         dao = new GroupMemberDao();
@@ -35,10 +34,10 @@ public class GroupMemberService {
             if (m == null) {
                 System.out.println("존재하지 않는 회원");
             } else {
-                if (dao.checkMyGroup(m.getId(), Group_id)) {
-                    System.out.printf("이미 %s에 소속된 멤버입니다", Group_id);
+                if (dao.checkMyGroup(m.getId(), GroupService.groupId)) {
+                    System.out.printf("이미 %s에 소속된 멤버입니다", GroupService.groupId);
                 } else {
-                    dao.insert(username, Group_id);
+                    dao.insert(username, GroupService.groupId);
                     System.out.printf("%s님 추가완료", username);
                 }
                 break;
@@ -57,8 +56,8 @@ public class GroupMemberService {
             if (m == null) {
                 System.out.println("존재하지 않는 회원");
             } else {
-                if (dao.checkMyGroup(m.getId(), Group_id)) {
-                    dao.delete(m.getId(), Group_id);
+                if (dao.checkMyGroup(m.getId(), GroupService.groupId)) {
+                    dao.delete(m.getId(), GroupService.groupId);
                     System.out.printf("%s님 추가완료", username);
                 } else {
                     System.out.println("소속된 멤버가 아님");
@@ -72,7 +71,7 @@ public class GroupMemberService {
     // 내 그룹원 확인(전체)
     public void printMyGroupMember() {
         System.out.println("==== 내 그룹원 전체 확인 ====");
-        List<GroupMember> list = dao.selectAll(Group_id);
+        List<GroupMember> list = dao.selectAll(GroupService.groupId);
         printAll(list);
     }
 
@@ -86,8 +85,8 @@ public class GroupMemberService {
         if (m == null){
             System.out.println("존재하지 않는 회원");
         } else{
-            GroupMember gm = dao.selectGroupMember(m.getId(), Group_id);
-            if(dao.checkMyGroup(m.getId(), Group_id) &&
+            GroupMember gm = dao.selectGroupMember(m.getId(), GroupService.groupId);
+            if(dao.checkMyGroup(m.getId(), GroupService.groupId) &&
                     gm != null){
                 System.out.println(gm);
             }
