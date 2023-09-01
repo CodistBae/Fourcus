@@ -258,7 +258,7 @@ public class StudyHourDao {
     }
 
     // select max
-    public long selectMax(String startDate, long subjectId){
+    public long selectMax(String startDate, Long subjectId){
         long max = 0;
         Connection connection = dbUtils.getConnection();
         String sql = "select Max_focus_time from StudyHour where Subject_id = ? and Start_date = ?";
@@ -285,6 +285,33 @@ public class StudyHourDao {
 
     }
 
+    // selectMaxAll
+    public ArrayList<Long> selectMaxAll(String startDate, Long memberId){
+        ArrayList<Long> list = new ArrayList<>();
+        Connection connection = dbUtils.getConnection();
+        String sql = "select Max_focus_time from StudyHour where Start_date = ?"+
+                " and Subject_id in(select Id from Subject where Member_id = ?)";
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, startDate);
+            ps.setLong(2, memberId);
+            ResultSet rs = ps.executeQuery();
+
+            while(rs.next()) {
+                list.add(rs.getLong(1));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return list;
+    }
 
     // update max
     public void updateMax(long newMax, String startDate, Long subjectId){
@@ -334,12 +361,12 @@ public class StudyHourDao {
     }
 
     // 시분초 변환 메서드
-    public void changeSec(long secconds) {
-        int hour = (int)secconds/(60*60);
-        int min = (int)secconds/60;
-        int sec = (int)secconds%60;
+    public void changeSec(long seconds) {
+        int hour = (int)seconds/(60*60);
+        int min = (int)seconds/60;
+        int sec = (int)seconds%60;
 
-        System.out.print(hour+"시간 " + min +"분 " + sec +"초" );
+        System.out.print(hour+"시간 " + min +"분 " + sec +"초");
 
     }
 
