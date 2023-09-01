@@ -6,7 +6,10 @@ import studyhour.vo.StudyHour;
 import subject.dao.Subjectdao;
 import subject.service.SubjectService;
 import subject.vo.Subject;
+import tamagotchi.service.TamagotchiService;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.sql.Time;
 import java.time.Duration;
 import java.time.LocalDate;
@@ -18,8 +21,9 @@ public class StudyHourService {
     private StudyHourDao shDao;
     private Subjectdao subjectdao;
     private static Long subjectId;
-    public static String today = null;
+    public static String today;
     private Subjectdao subjectDao;
+    private TamagotchiService tamagotchiService;
 
 
     public StudyHourService() {
@@ -27,38 +31,45 @@ public class StudyHourService {
         shDao = new StudyHourDao();
         subjectDao = new Subjectdao();
         subjectId = null;
+        today = null;
+        tamagotchiService = TamagotchiService.getInstance();
     }
 
 
     // 시작 버튼 ( 첫 시작 insert or 재시작 update)
-    public void addStart(Scanner sc) {
+    public void addStart(BufferedReader br) throws IOException {
         // 과목 리스트 보여주기
         List<Subject> list = subjectdao.selectAll(MemberService.loginId);
-        for (int i = 0; i < list.size(); i++) {
-            System.out.println(i + " " + list.get(i));
-        }
-        // 과목 번호 가져오기
-        System.out.println("공부할 과목 번호를 입력하세요.");
-        int num = sc.nextInt();
-        // num <0 일떄도 예외처리
-        if (num < 0 || num > list.size() - 1) {
-            System.out.println("잘못 입력하셨습니다.");
+        if(list.isEmpty()){
+            System.out.println("과목을 먼저 추가해주세요.");
         } else {
-            subjectId = list.get(num).getId();
-            LocalDateTime now = LocalDateTime.now().withNano(0);
-            Time currentTime = Time.valueOf(now.toLocalTime());
-            today = String.valueOf(now).split("T")[0];
-
-            if (Objects.nonNull(shDao.selectStartTime(today, subjectId))) {
-                System.out.println("공부를 재시작합니다.");
-                shDao.reStart(currentTime, today, subjectId);
-                System.out.println("재시작 시간 : " + currentTime);
+            for (int i = 0; i < list.size(); i++) {
+                System.out.println(i + " " + list.get(i));
+            }
+            // 과목 번호 가져오기
+            System.out.println("공부할 과목 번호를 입력하세요.");
+            int num = Integer.parseInt(br.readLine());
+            // num <0 일떄도 예외처리
+            if (num < 0 || num > list.size() - 1) {
+                System.out.println("잘못 입력하셨습니다.");
             } else {
-                System.out.println("공부를 시작합니다.");
-                shDao.start(currentTime, today, subjectId);
-                System.out.println("시작 시간 : " + currentTime);
+                subjectId = list.get(num).getId();
+                LocalDateTime now = LocalDateTime.now().withNano(0);
+                Time currentTime = Time.valueOf(now.toLocalTime());
+                today = String.valueOf(now).split("T")[0];
+
+                if (Objects.nonNull(shDao.selectStartTime(today, subjectId))) {
+                    System.out.println("공부를 재시작합니다.");
+                    shDao.reStart(currentTime, today, subjectId);
+                    System.out.println("재시작 시간 : " + currentTime);
+                } else {
+                    System.out.println("공부를 시작합니다.");
+                    shDao.start(currentTime, today, subjectId);
+                    System.out.println("시작 시간 : " + currentTime);
+                }
             }
         }
+
     }
 
 
@@ -107,32 +118,38 @@ public class StudyHourService {
         // 과목 아이디 리셋
         //    shDao.stop(null, subjectId); 종료시간은 업데이트하니까 안해도 될 듯 .. ?
         subjectId = null;
+        tamagotchiService.levelUpdate();
 
     }
 
     // 누적시간 날짜별 + 과목별 가져오기
-    public void printCumulativeTime(Scanner sc) {
-        System.out.println("====오늘 " + today + " 과목별 누적시간====");
-        // 과목 리스트 보여주기
-        System.out.println("====과목 리스트====");
-        List<Subject> list = subjectdao.selectAll(MemberService.loginId);
-        for (int i = 0; i < list.size(); i++) {
-            System.out.println(i + " " + list.get(i));
+    public void printCumulativeTime(BufferedReader br) throws IOException {
+        if(today == null){
+            System.out.println("오늘 공부시간이 없습니다.");
+        } else {
+            System.out.println("====오늘 " + today + " 과목별 누적시간====");
+            // 과목 리스트 보여주기
+            System.out.println("====과목 리스트====");
+            List<Subject> list = subjectdao.selectAll(MemberService.loginId);
+            for (int i = 0; i < list.size(); i++) {
+                System.out.println(i + " " + list.get(i));
+            }
+            // 과목 번호 가져오기
+            System.out.println(" 과목 번호를 입력하세요.");
+            int num = Integer.parseInt(br.readLine());
+            if (num < 0 || num > list.size() - 1) {
+                System.out.println("잘못 입력하셨습니다.");
+            } else{
+                Long id = list.get(num).getId();
+                String subjectName = subjectDao.select(id).getSubjectName();
+                long cumTime = shDao.selectCumulativeTime(today,id);
+                System.out.println("====누적 시간====");
+                System.out.print(today+ " " + subjectName + "의 누적 시간은 ");
+                shDao.changeSec(cumTime);
+                System.out.println(" 입니다.");
+            }
         }
-        // 과목 번호 가져오기
-        System.out.println(" 과목 번호를 입력하세요.");
-        int num = sc.nextInt();
-        if (num < 0 || num > list.size() - 1) {
-            System.out.println("잘못 입력하셨습니다.");
-        } else{
-            long id = list.get(num).getId();
-            String subjectName = subjectDao.select(id).getSubjectName();
-            long cumTime = shDao.selectCumulativeTime(today,id);
-            System.out.println("====누적 시간====");
-            System.out.print(today+ " " + subjectName + "의 누적 시간은 ");
-            shDao.changeSec(cumTime);
-            System.out.println(" 입니다.");
-        }
+
     }
 
 //    // 누적시간 과목별 가져오기
@@ -176,12 +193,17 @@ public class StudyHourService {
 
     // 오늘 최대 집중 시간
     public void printTodayMaxTime() {
-        ArrayList<Long> list = shDao.selectTodayMax(today, MemberService.loginId);
-        long max = Collections.max(list);
-        System.out.println("====최대 집중 시간====");
-        System.out.print(today + " 최대 집중 시간은 ");
-        shDao.changeSec(max);
-        System.out.print(" 입니다");
+        if(today == null){
+            System.out.println("오늘 공부 시간이 없습니다.");
+        } else {
+            ArrayList<Long> list = shDao.selectTodayMax(today, MemberService.loginId);
+            long max = Collections.max(list);
+            System.out.println("====최대 집중 시간====");
+            System.out.print(today + " 최대 집중 시간은 ");
+            shDao.changeSec(max);
+            System.out.print(" 입니다");
+        }
+
     }
 }
 

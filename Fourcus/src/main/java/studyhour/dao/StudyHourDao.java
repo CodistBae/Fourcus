@@ -18,7 +18,7 @@ public class StudyHourDao {
 
 
     // 공부시간 startTime, startDate 넣기
-    public void start(Time startTime, String startDate, long subjectId){
+    public void start(Time startTime, String startDate, Long subjectId){
         Connection connection = dbUtils.getConnection();
         String sql = "insert into StudyHour(Start_time, Start_date , Subject_id, Cumulative_time, Max_focus_time) " +
                 "values(?,?,?,0,0)";
@@ -43,7 +43,7 @@ public class StudyHourDao {
     }
 
     // 종료시간 업데이트
-    public void stop(Time stopTime, String startDate, long subjectId) {
+    public void stop(Time stopTime, String startDate, Long subjectId) {
         Connection connection = dbUtils.getConnection();
         String sql = "update StudyHour set Stop_time = ? where Subject_id = ? and Start_date = ?";
 
@@ -66,7 +66,7 @@ public class StudyHourDao {
     }
 
     // 공부시간 reStarttime 업데이트
-    public void reStart(Time reStartTime, String startDate, long subjectId) {
+    public void reStart(Time reStartTime, String startDate, Long subjectId) {
         Connection connection = dbUtils.getConnection();
         String sql = "update StudyHour set Restart_time = ? where Subject_id = ? and Start_date = ?";
 
@@ -90,7 +90,7 @@ public class StudyHourDao {
 
 
     // 시작 시각 가져오기
-    public Time selectStartTime(String startDate, long subjectId){
+    public Time selectStartTime(String startDate, Long subjectId){
         Time startTime = null;
         Connection connection = dbUtils.getConnection();
         String sql = "select Start_time from StudyHour where Subject_id = ? and Start_date = ?";
@@ -119,7 +119,7 @@ public class StudyHourDao {
     }
 
     // 종료 시각 가져오기
-    public Time selectStopTime(String startDate, long subjectId){
+    public Time selectStopTime(String startDate, Long subjectId){
         Time stopTime = null;
         Connection connection = dbUtils.getConnection();
         String sql = "select Stop_time from StudyHour where Subject_id = ? and Start_date = ?";
@@ -148,7 +148,7 @@ public class StudyHourDao {
     }
 
     // restart 시간 가져오기
-    public Time selectRestartTime(String startDate,long subjectId){
+    public Time selectRestartTime(String startDate,Long subjectId){
         Time restartTime = null;
         Connection connection = dbUtils.getConnection();
         String sql = "select Restart_time from StudyHour where Subject_id = ? and Start_date = ?";
@@ -177,7 +177,7 @@ public class StudyHourDao {
 
 
     // 과목 id로 검색
-    public StudyHour select(long subjectId){
+    public StudyHour select(Long subjectId){
         StudyHour sh = null;
         Connection connection = dbUtils.getConnection();
         String sql = "select * from StudyHour where Subject_id = ?";
@@ -207,7 +207,7 @@ public class StudyHourDao {
     }
 
     // select ct
-    public long selectCumulativeTime(String startDate, long subjectId){
+    public long selectCumulativeTime(String startDate, Long subjectId){
         long time = 0;
         Connection connection = dbUtils.getConnection();
         String sql = "select Cumulative_time from StudyHour where Subject_id = ? and Start_date = ?";
@@ -236,7 +236,7 @@ public class StudyHourDao {
 
 
     // update ct( 누적시간 )
-    public void updateCumulativeTime(long newCumulativeTIme, String startDate, long subjectId){
+    public void updateCumulativeTime(long newCumulativeTIme, String startDate, Long subjectId){
         Connection connection = dbUtils.getConnection();
         String sql = "update StudyHour set Cumulative_time = ?  where Subject_id = ? and Start_date = ?";
 
@@ -287,7 +287,7 @@ public class StudyHourDao {
 
 
     // update max
-    public void updateMax(long newMax, String startDate, long subjectId){
+    public void updateMax(long newMax, String startDate, Long subjectId){
         Connection connection = dbUtils.getConnection();
         String sql = "update StudyHour set Max_focus_time = ?  where Subject_id = ? and Start_date = ?";
 
@@ -309,7 +309,7 @@ public class StudyHourDao {
     }
 
     // select startDate
-    public String selectStartDate(long subjectId){
+    public String selectStartDate(Long subjectId){
         String startDate = null ;
         Connection connection = dbUtils.getConnection();
         String sql = "select Start_date from StudyHour where subject_id = ?";
@@ -344,7 +344,7 @@ public class StudyHourDao {
     }
 
     // select ct 날짜 선택 x
-    public ArrayList<Long> selectSubjectCumulativeTime(long subjectId){
+    public ArrayList<Long> selectSubjectCumulativeTime(Long subjectId){
         ArrayList<Long> list = new ArrayList<>();
         Connection connection = dbUtils.getConnection();
         String sql = "select Cumulative_time from StudyHour where Subject_id = ?";
@@ -371,7 +371,7 @@ public class StudyHourDao {
     }
 
     // 하루 전체 중 최대 집중 시간 가져오기
-    public ArrayList<Long> selectTodayMax(String startDate, long memberId){
+    public ArrayList<Long> selectTodayMax(String startDate, Long memberId){
         ArrayList<Long> list = new ArrayList<>();
         Connection connection = dbUtils.getConnection();
         String sql = "select Cumulative_time from StudyHour where Start_date = ?" +

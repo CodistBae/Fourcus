@@ -16,7 +16,6 @@ public class GroupMemberService {
     private GroupMemberDao dao;
     private MemberDao mdao;
 
-
     public GroupMemberService() {
         dao = new GroupMemberDao();
         mdao = MemberDao.getInstance();
