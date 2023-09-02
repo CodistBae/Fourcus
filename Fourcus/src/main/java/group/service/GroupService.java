@@ -34,7 +34,8 @@ public class GroupService {
             dao.insert(new Group(MemberService.loginId, group_name));
 
             Member m = mdao.selectById(MemberService.loginId);
-            gmdao.insert(MemberService.loginId, m.getUsername(), );
+            gmdao.insert(MemberService.loginId, m.getUsername(),
+                    dao.select(group_name).getId());
 //            System.out.println(group_name + " 그룹이 생성되었습니다.");
         } else {
             System.out.println("로그인 후 사용해주세요.");
