@@ -74,6 +74,7 @@ public class GroupMemberDao {
                         join `Subject` s on s.Member_id = m.Id
                         join StudyHour sh on s.Id = sh.Subject_id
                         where gm.Group_id = ?
+                        order by sum(sh.Cumulative_time)
                 """;
 
         try (Connection connection = dbUtils.getConnection();

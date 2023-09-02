@@ -2,6 +2,7 @@ package group.dao;
 
 import common.DbUtils;
 import group.vo.Group;
+import groupmember.vo.GroupMember;
 import member.vo.Member;
 
 import java.sql.Connection;
@@ -9,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class GroupDao {
     private DbUtils dbUtils;
@@ -120,7 +122,7 @@ public class GroupDao {
         return null;
     }
 
-    // 그룹 리스트
+    // (내가 그룹장인)그룹 리스트
     public ArrayList<Group> selectAll(Long Member_id){
         ArrayList<Group> list = new ArrayList<>();
         Connection conn = dbUtils.getConnection();
@@ -148,6 +150,38 @@ public class GroupDao {
         }
         return list;
     }
+    // 내가 속한 그룹 (내가 그룹원인)
+    public List<Group> selectMyGroup(Long Member_id){
+        List<Group> list = new ArrayList<>();
+
+        String sql = """
+                   select * from `Group` g
+                   join GroupMember gm on gm.Group_id = g.Id
+                   where gm.Member_id =?
+                   """;
+
+        try (Connection connection = dbUtils.getConnection();
+             PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setLong(1, Member_id);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                list.add(new Group(
+                        rs.getLong(1),
+                        rs.getLong(2),
+                        rs.getString(3),
+                        rs.getString(4)
+                ));
+
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return list;
+    }
+
 
     // 공지 생성, 수정
     public void notice(String notice, Long Group_id, Long Member_id){
