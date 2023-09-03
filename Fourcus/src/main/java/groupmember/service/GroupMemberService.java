@@ -72,6 +72,8 @@ public class GroupMemberService {
     // 내 그룹원 확인(전체)
     public void printMyGroupMember() {
         System.out.println("==== 내 그룹원 전체 확인 ====");
+        GroupMember gm = dao.getSumCumulativeTime(GroupService.groupId); // 업데이트 된 누적시간(sum)을 가진 객체
+        dao.updateCumulativeTime(gm); // GroupMember 테이블에 업데이트
         List<GroupMember> list = dao.selectAll(GroupService.groupId);
         printAll(list);
     }
@@ -87,13 +89,18 @@ public class GroupMemberService {
             System.out.println("존재하지 않는 회원");
         } else{
             GroupMember gm = dao.selectGroupMember(m.getId(), GroupService.groupId);
-            if(dao.checkMyGroup(m.getId(), GroupService.groupId) &&
-                    gm != null){
-                System.out.println(gm);
-            }
-            else{
+            if(dao.checkMyGroup(m.getId(), GroupService.groupId)){ // 내 그룹인지 확인
+                GroupMember gm2 = dao.getSumCumulativeTime(GroupService.groupId); // 업데이트 된 누적시간(sum)을 가진 객체
+                dao.updateCumulativeTime(gm2); // GroupMember 테이블에 업데이트
+                System.out.println(gm2);
+            } else{
                 System.out.println("소속멤버가 아님");
             }
+//            if(dao.checkMyGroup(m.getId(), GroupService.groupId) && gm != null){ // 내 그룹인지 확인
+//                System.out.println(gm);
+//            }
+//
+
         }
 
     }

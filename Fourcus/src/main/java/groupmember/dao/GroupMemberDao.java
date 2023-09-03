@@ -121,6 +121,54 @@ public class GroupMemberDao {
         }
         return null;
     }
+    // 누적시간 합계sum구하기(GroupMember 1명에 대하여)
+    public GroupMember getSumCumulativeTime(Long Group_id){
+
+        String sql = """
+                select gm.Id, gm.Member_id, gm.Group_id, sum(sh.Cumulative_time) from `Member` m
+                        join GroupMember gm on m.Id = gm.Member_id
+                        join `Subject` s on s.Member_id = m.Id
+                        join StudyHour sh on s.Id = sh.Subject_id
+                        where gm.Group_id = ?
+                """;
+
+        try (Connection connection = dbUtils.getConnection();
+             PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setLong(1, Group_id);
+
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return new GroupMember(
+                        rs.getLong(1), // Id
+                        rs.getLong(2), // Member_id
+                        rs.getLong(3), // Group_name
+                        rs.getLong(4) // Cumulative_time
+                );
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+
+    // 누적시간 update
+    public void updateCumulativeTime(GroupMember gm){
+
+        String sql = """
+                    update GroupMember set Cumulative_time = ?  
+                    where Member_id = ?
+                    """;
+
+        try (Connection connection = dbUtils.getConnection();
+             PreparedStatement pstmt = connection.prepareStatement(sql)){
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setLong(1, gm.getCumulative_time());
+            ps.setLong(2, gm.getMember_id());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     // 내 그룹원인지 확인( Member_id -> Group_id)
     public boolean checkMyGroup(Long Member_id, Long Group_id) {
