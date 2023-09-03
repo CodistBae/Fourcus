@@ -109,7 +109,6 @@ public class GroupService {
             return list;
 
         } else{
-            System.out.println("소속된 그룹이 없습니다");
             return null;
         }
     }

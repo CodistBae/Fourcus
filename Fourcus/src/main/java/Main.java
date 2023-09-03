@@ -104,11 +104,10 @@ public class Main {
     }
 
     public static void groupManage(BufferedReader br) throws IOException {
-        System.out.println("그룹 관리");
+        System.out.println("그룹장 메뉴");
         boolean bl = groupService.selectGroup(br);
-        // 내가 속한 그룹list 보여주고 선택
-        if(bl) {
-            //내가 그룹장이라면 그룹장의 메뉴를 호출
+        // 내가 그룹장인 그룹 list 보여준다
+        if(bl) { //내가 그룹장이라면 그룹장의 메뉴를 호출
 
             System.out.println("1.그룹명 수정 2.공지사항 3.그룹원 관리 4.그룹 삭제");
             System.out.print("메뉴를 선택하세요 : ");
@@ -121,8 +120,7 @@ public class Main {
                 case 4 -> groupService.deleteGroup(br);
                 default -> throw new IllegalStateException("Unexpected value: " + select);
             }
-        } else{
-            // 그룹장이 아니면 이전메뉴 호출
+        } else{  // 그룹장이 아니면 이전메뉴 호출
             group(br);
         }
     }
@@ -156,6 +154,7 @@ public class Main {
             }
 
         } else{ // 속한 그룹이 없으면 이전메뉴로
+            System.out.println("소속된 그룹이 없습니다");
             group(br);
         }
     }
