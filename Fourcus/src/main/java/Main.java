@@ -91,14 +91,14 @@ public class Main {
 
     public static void group(BufferedReader br) throws IOException {
         System.out.println("그룹");
-        System.out.println("1.그룹 생성 2.그룹 검색 3.그룹 관리 4.내 그룹원 확인");
+        System.out.println("1.그룹 생성 2.그룹 검색 3.그룹장 메뉴 4.그룹원 메뉴");
         System.out.print("메뉴를 선택하세요 : ");
         int select = Integer.parseInt(br.readLine());
         switch (select) {
             case 1 -> groupService.createGroup(br);
             case 2 -> groupService.searchGroup(br);
             case 3 -> groupManage(br);
-            case 4 -> groupMemberService.printMyGroupMember();
+            case 4 -> groupMemberMenu(br);
             default -> throw new IllegalStateException("Unexpected value: " + select);
         }
     }
@@ -106,8 +106,9 @@ public class Main {
     public static void groupManage(BufferedReader br) throws IOException {
         System.out.println("그룹 관리");
         boolean bl = groupService.selectGroup(br);
-
+        // 내가 속한 그룹list 보여주고 선택
         if(bl) {
+            //내가 그룹장이라면 그룹장의 메뉴를 호출
 
             System.out.println("1.그룹명 수정 2.공지사항 3.그룹원 관리 4.그룹 삭제");
             System.out.print("메뉴를 선택하세요 : ");
@@ -121,32 +122,41 @@ public class Main {
                 default -> throw new IllegalStateException("Unexpected value: " + select);
             }
         } else{
+            // 그룹장이 아니면 이전메뉴 호출
             group(br);
         }
     }
-
+    // 그룹장 메뉴
     public static void groupMemberManage(BufferedReader br) throws IOException {
         System.out.println("그룹원 관리");
 
-        System.out.println("1.그룹원 확인 2.그룹원 프로필 3.그룹장 메뉴");
+        System.out.println("1.그룹원 확인 2.그룹원 프로필 3.그룹원 추가 4.그룹원 추방");
         System.out.print("메뉴를 선택하세요 : ");
         int select = Integer.parseInt(br.readLine());
 
         switch (select){
             case 1 -> groupMemberService.printMyGroupMember();
             case 2 -> groupMemberService.printMyGroupMemberProfile(br);
-            case 3 -> groupMasterMenu(br);
+            case 3 -> groupMemberService.addGroupMember(br);
+            case 4 -> groupMemberService.delGroupMember(br);
         }
     }
-    public static void groupMasterMenu(BufferedReader br) throws IOException{
-        System.out.println("그룹장 메뉴");
+    // 그룹원 메뉴
+    public static void groupMemberMenu(BufferedReader br) throws IOException{
+        System.out.println("그룹원 메뉴");
+        boolean bl = groupService.selectMyBelongingGroup(br);
+        if (bl){ // 속한 그룹이 있으면 선택
+            System.out.println("1.그룹원 확인 2.그룹원 프로필 3.이전 메뉴로");
+            System.out.print("메뉴를 선택하세요 : ");
+            int select = Integer.parseInt(br.readLine());
+            switch (select){
+                case 1 -> groupMemberService.printMyGroupMember();
+                case 2 -> groupMemberService.printMyGroupMemberProfile(br);
+                case 3 -> group(br);
+            }
 
-        System.out.println("1.그룹멤버 추가 2. 그룹멤버 추방");
-        int select = Integer.parseInt(br.readLine());
-
-        switch (select){
-            case 1 -> groupMemberService.addGroupMember(br);
-            case 2 -> groupMemberService.delGroupMember(br);
+        } else{ // 속한 그룹이 없으면 이전메뉴로
+            group(br);
         }
     }
 
