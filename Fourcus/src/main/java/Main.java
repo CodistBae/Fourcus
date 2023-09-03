@@ -23,7 +23,7 @@ public class Main {
 
     public static void main(String[] args) throws IllegalStateException {
         init();
-        try (BufferedReader br  = new BufferedReader(new InputStreamReader(System.in))) {
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in))) {
             boolean flag = true;
 
             while (flag) {
@@ -89,7 +89,7 @@ public class Main {
         }
     }
 
-    public static void group(BufferedReader br) throws IOException{
+    public static void group(BufferedReader br) throws IOException {
         System.out.println("그룹");
         System.out.println("1.그룹 생성 2.그룹 검색 3.그룹장 메뉴 4.그룹원 메뉴");
         System.out.print("메뉴를 선택하세요 : ");
@@ -102,9 +102,9 @@ public class Main {
             default -> throw new IllegalStateException("Unexpected value: " + select);
         }
     }
-    
-    public static void groupManage(BufferedReader br) throws IOException{// 그룹장 메뉴
-        System.out.println("그룹장 메뉴");
+
+    public static void groupManage(BufferedReader br) throws IOException {
+        System.out.println("그룹 관리");
         boolean bl = groupService.selectGroup(br);
         // 내가 속한 그룹list 보여주고 선택
         if(bl) {
@@ -194,16 +194,24 @@ public class Main {
         int select = Integer.parseInt(br.readLine());
         switch (select) {
             case 1 -> {
-                if(bl){
-                    System.out.println("먼저 공부를 종료하세요.");
+                if (bl) {
+                    System.out.println("먼저 공부를 종료해주세요.");
                 } else {
-                    studyHourService.addStart(br);
-                    bl = true;
+                    if (subjectService.checkSubject().isEmpty()) {
+                        System.out.println("과목을 먼저 추가해주세요.");
+                    } else {
+                        studyHourService.addStart(br);
+                        bl = true;
+                    }
                 }
             }
             case 2 -> {
-                studyHourService.clickStop();
-                bl = false;
+                if (!bl) {
+                    System.out.println("먼저 공부를 시작해주세요.");
+                } else {
+                    studyHourService.clickStop();
+                    bl = false;
+                }
             }
             default -> throw new IllegalStateException("Unexpected value: " + select);
         }
