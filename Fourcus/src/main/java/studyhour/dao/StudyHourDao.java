@@ -452,5 +452,25 @@ public class StudyHourDao {
         return studyHours;
     }
 
+    // 과목 삭제시 studyhour 테이블에서도 삭제
+    public void delete(Long subjectId){
+        Connection connection = dbUtils.getConnection();
+        String sql = "delete from StudyHour where Subject_id = ?";
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setLong(1, subjectId);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
 }
 
