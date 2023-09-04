@@ -177,8 +177,8 @@ public class MemberService {
             if(gdao.selectAll(loginId).size() != 0){
                 System.out.println("내가 그룹장인 그룹 존재. 탈퇴 불가능");
             } else {
-                mdao.delete(loginId);
                 gmdao.delete(loginId, GroupService.groupId);
+                mdao.delete(loginId);
             }
         } else {
             System.out.println("로그인 후 사용해주세요.");
