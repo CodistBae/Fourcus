@@ -87,6 +87,7 @@ public class GroupMemberDao {
                 select Id, Member_id, Group_id, Cumulative_time
                 from GroupMember 
                 where Group_id =?
+                order by Cumulative_time desc
                 """;
 
         try (Connection connection = dbUtils.getConnection();
@@ -145,7 +146,6 @@ public class GroupMemberDao {
                         join StudyHour sh on s.Id = sh.Subject_id
                                 group by gm.Member_id
                                 having gm.Group_id = ?
-                                        order by sum(sh.Cumulative_time) desc 
                 """;
 
         try (Connection connection = dbUtils.getConnection();
