@@ -144,7 +144,7 @@ public class MemberService {
     }
 
     // 로그인
-    public void Login(BufferedReader br) throws IOException {
+    public boolean Login(BufferedReader br) throws IOException {
         if (loginId == null) {
             System.out.println("=====로그인=====");
             System.out.print("ID: ");
@@ -155,15 +155,19 @@ public class MemberService {
             Member m = mdao.select(1, username);
             if(m==null){
                 System.out.println(username+"이 존재하지 않습니다.");
+                return false;
             }
             if (password.equals(m.getPassword())) {
                 loginId = m.getId();
                 System.out.println(m.getUsername() + " 로그인 성공");
+                return true;
             } else {
                 System.out.println("로그인 실패. 비밀번호가 일치하지 않습니다.");
+                return false;
             }
         } else {
             System.out.println("로그인 상태입니다.");
+            return true;
         }
     }
 
