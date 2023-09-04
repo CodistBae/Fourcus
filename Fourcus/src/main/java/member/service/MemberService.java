@@ -153,6 +153,9 @@ public class MemberService {
             String password = br.readLine();
 
             Member m = mdao.select(1, username);
+            if(m==null){
+                System.out.println(username+"이 존재하지 않습니다.");
+            }
             if (password.equals(m.getPassword())) {
                 loginId = m.getId();
                 System.out.println(m.getUsername() + " 로그인 성공");
@@ -179,6 +182,7 @@ public class MemberService {
             } else {
                 gmdao.delete(loginId, GroupService.groupId);
                 mdao.delete(loginId);
+                loginId = null;
             }
         } else {
             System.out.println("로그인 후 사용해주세요.");
