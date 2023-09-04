@@ -61,6 +61,21 @@ public class GroupMemberDao {
             throw new RuntimeException(e);
         }
     }
+    public void delete(Long Member_id) {
+
+        String sql = "delete from GroupMember where Member_id =?";
+
+        try (Connection connection = dbUtils.getConnection();
+             PreparedStatement pstmt = connection.prepareStatement(sql)) {
+
+            pstmt.setLong(1, Member_id); //
+
+            int cnt = pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 
 //* 공통기능 *//
