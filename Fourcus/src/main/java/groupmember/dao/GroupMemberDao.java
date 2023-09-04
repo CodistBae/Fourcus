@@ -61,6 +61,21 @@ public class GroupMemberDao {
             throw new RuntimeException(e);
         }
     }
+    public void delete(Long Member_id) {
+
+        String sql = "delete from GroupMember where Member_id =?";
+
+        try (Connection connection = dbUtils.getConnection();
+             PreparedStatement pstmt = connection.prepareStatement(sql)) {
+
+            pstmt.setLong(1, Member_id); //
+
+            int cnt = pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 
 //* 공통기능 *//
@@ -69,10 +84,9 @@ public class GroupMemberDao {
         List<GroupMember> list = new ArrayList<>();
 
         String sql = """
-                select gm.Id, gm.Member_id, gm.Group_id, Cumulative_time
-                from GroupMember gm
-                join `Group` g on g.id = gm.Group_id
-                where gm.Group_id =?
+                select Id, Member_id, Group_id, Cumulative_time
+                from GroupMember 
+                where Group_id =?
                 """;
 
         try (Connection connection = dbUtils.getConnection();
@@ -122,14 +136,16 @@ public class GroupMemberDao {
         return null;
     }
     // 누적시간 합계sum구하기(GroupMember 1명에 대하여)
-    public GroupMember getSumCumulativeTime(Long Group_id){
-
+    public List<GroupMember> getSumCumulativeTime(Long Group_id){
+        List<GroupMember> list = new ArrayList<>();
         String sql = """
                 select gm.Id, gm.Member_id, gm.Group_id, sum(sh.Cumulative_time) from `Member` m
                         join GroupMember gm on m.Id = gm.Member_id
                         join `Subject` s on s.Member_id = m.Id
                         join StudyHour sh on s.Id = sh.Subject_id
-                        where gm.Group_id = ?
+                                group by gm.Member_id
+                                having gm.Group_id = ?
+                                        order by sum(sh.Cumulative_time) desc 
                 """;
 
         try (Connection connection = dbUtils.getConnection();
@@ -137,22 +153,22 @@ public class GroupMemberDao {
             pstmt.setLong(1, Group_id);
 
             ResultSet rs = pstmt.executeQuery();
-            if (rs.next()) {
-                return new GroupMember(
+            while (rs.next()) {
+                list.add(new GroupMember(
                         rs.getLong(1), // Id
                         rs.getLong(2), // Member_id
                         rs.getLong(3), // Group_name
                         rs.getLong(4) // Cumulative_time
-                );
+                ));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return null;
+        return list;
     }
 
     // 누적시간 update
-    public void updateCumulativeTime(GroupMember gm){
+    public void updateCumulativeTime(List<GroupMember> list){
 
         String sql = """
                     update GroupMember set Cumulative_time = ?  
@@ -162,9 +178,11 @@ public class GroupMemberDao {
         try (Connection connection = dbUtils.getConnection();
              PreparedStatement pstmt = connection.prepareStatement(sql)){
             PreparedStatement ps = connection.prepareStatement(sql);
-            ps.setLong(1, gm.getCumulative_time());
-            ps.setLong(2, gm.getMember_id());
-            ps.executeUpdate();
+            for(GroupMember loop : list){
+                ps.setLong(1, loop.getCumulative_time());
+                ps.setLong(2, loop.getMember_id());
+                ps.executeUpdate();
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

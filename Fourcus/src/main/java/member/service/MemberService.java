@@ -180,7 +180,8 @@ public class MemberService {
             if(gdao.selectAll(loginId).size() != 0){
                 System.out.println("내가 그룹장인 그룹 존재. 탈퇴 불가능");
             } else {
-                gmdao.delete(loginId, GroupService.groupId);
+//                gmdao.delete(loginId, GroupService.groupId);
+                gmdao.delete(loginId);
                 mdao.delete(loginId);
                 loginId = null;
             }
