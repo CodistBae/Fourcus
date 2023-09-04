@@ -65,7 +65,7 @@ public class GroupService {
             System.out.print("검색할 그룹명: ");
             String group_name = br.readLine();
 
-            dao.select(group_name);
+            System.out.println(dao.select(group_name));
         } else
             System.out.println("로그인 후 사용해주세요.");
     }
