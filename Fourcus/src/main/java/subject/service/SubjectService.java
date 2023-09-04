@@ -1,6 +1,7 @@
 package subject.service;
 
 import member.service.MemberService;
+import studyhour.dao.StudyHourDao;
 import subject.dao.Subjectdao;
 import subject.vo.Subject;
 
@@ -12,8 +13,11 @@ import java.util.Scanner;
 
 public class SubjectService {
     private Subjectdao sjdao;
+    private StudyHourDao studyHourDao;
     public SubjectService() {
+
         sjdao = new Subjectdao();
+        studyHourDao = new StudyHourDao();
     }
 
     // 과목 추가
@@ -84,8 +88,8 @@ public class SubjectService {
         if(num <0 || num > list.size()-1) {
             System.out.println("잘못 입력하셨습니다.");
         } else {
+            studyHourDao.delete(list.get(num).getId());
             sjdao.delete(list.get(num).getId());
-
             System.out.println("삭제완료.");
         }
 
